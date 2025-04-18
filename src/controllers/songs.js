@@ -1,4 +1,5 @@
 const Song = require("../models/song");
+const Artist = require("../models/artist");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
@@ -19,10 +20,35 @@ const songValidator = () => {
   ];
 };
 
+const updateSongValidator = () => [
+  body("title")
+    .optional()
+    .notEmpty()
+    .withMessage("Title cannot be empty")
+    .trim(),
+  body("duration")
+    .optional()
+    .isNumeric()
+    .withMessage("Duration must be a number"),
+  body("releaseDate")
+    .optional()
+    .isISO8601()
+    .withMessage("Release date must be a valid date")
+    .toDate(),
+  body("artist")
+    .optional()
+    .isMongoId()
+    .withMessage("Artist ID must be a valid ID"),
+];
+
 // List all songs, sorted by title and with populated artist
 exports.list = asyncHandler(async (req, res) => {
   const songs = await Song.find()
-    .populate("artist")
+    .populate({ path: "artist", select: "name" })
+    .populate({
+      path: "artist",
+      populate: { path: "songs", select: "title" },
+    })
     .populate("playlists")
     .sort({ title: 1 });
   res.status(200).json(songs);
@@ -31,7 +57,11 @@ exports.list = asyncHandler(async (req, res) => {
 // Get details of a specific song
 exports.detail = asyncHandler(async (req, res) => {
   const song = await Song.findById(req.params.id)
-    .populate("artist")
+    .populate({ path: "artist", select: "name" })
+    .populate({
+      path: "artist",
+      populate: { path: "songs", select: "title" },
+    })
     .populate("playlists");
   if (!song) {
     return res.status(404).json({ error: "Song not found" });
@@ -55,14 +85,24 @@ exports.create = [
       artist: req.body.artist,
       playlists: req.body.playlists || [],
     });
-    await song.save();
-    res.status(201).json(song);
+    await Artist.findByIdAndUpdate(
+      song.artist,
+      { $addToSet: { songs: song._id } } // addToSet avoids duplicates
+    );
+    const populated = await Song.findById(song._id)
+      .populate({
+        path: "artist",
+        select: "name songs",
+        populate: { path: "songs", select: "title" },
+      })
+      .populate("playlists");
+    res.status(201).json(populated);
   }),
 ];
 
 // Update an existing song
 exports.update = [
-  songValidator(),
+  updateSongValidator(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -81,7 +121,10 @@ exports.update = [
       song.playlists = req.body.playlists;
     }
     await song.save();
-    res.status(200).json(song);
+    const populated = await Song.findById(song._id)
+      .populate({ path: "artist", select: "name" })
+      .populate("playlists");
+    res.status(200).json(populated);
   }),
 ];
 
