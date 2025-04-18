@@ -1,89 +1,188 @@
 const Playlist = require("../models/playlist");
+const Song = require("../models/song");
 const asyncHandler = require("express-async-handler");
 
 const { body, query, validationResult } = require("express-validator");
 const { generatePaginationLinks } = require("../utils/generatePaginationLinks");
-const artist = require("../models/artist");
 
-exports.list = asyncHandler(async (req, res) => {
-  const playlists = await Playlist.find()
-    .populate("songs")
-    .populate("user")
-    .sort({ name: 1 });
-  res.json(playlists);
-});
+const playlistValidator = () => [
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("description")
+    .optional()
+    .isString()
+    .withMessage("Description must be a string"),
+  body("songs")
+    .optional()
+    .isArray()
+    .withMessage("Songs must be an array of IDs"),
+  body("songs.*")
+    .optional()
+    .isMongoId()
+    .withMessage("Each song ID must be valid"),
+];
+
+const updatePlaylistValidator = () => [
+  body("name")
+    .optional()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("description")
+    .optional()
+    .optional()
+    .isString()
+    .withMessage("Description must be a string"),
+  body("songs")
+    .optional()
+    .optional()
+    .isArray()
+    .withMessage("Songs must be an array of IDs"),
+  body("songs.*")
+    .optional()
+    .isMongoId()
+    .withMessage("Each song ID must be valid"),
+];
+
+exports.list = [
+  query("name").optional().trim(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    const filter = {};
+    if (req.query.name) filter.name = new RegExp(req.query.name, "i");
+
+    const options = {
+      page: req.paginate.page,
+      limit: req.paginate.limit,
+      sort: { name: 1 },
+      populate: [
+        { path: "songs", select: "title" },
+        { path: "user", select: "username" },
+      ],
+    };
+
+    const result = await Playlist.paginate(filter, options);
+    res
+      .status(200)
+      .links(
+        generatePaginationLinks(
+          req.originalUrl,
+          result.page,
+          result.totalPages,
+          result.limit
+        )
+      )
+      .json(result.docs);
+  }),
+];
 
 exports.detail = asyncHandler(async (req, res) => {
   const playlist = await Playlist.findById(req.params.id)
-    .populate("songs")
-    .populate("user");
-  if (!playlist) {
-    return res.status(404).json({ error: "Playlist not found" });
-  }
-  res.json(playlist);
+    .populate({ path: "songs", select: "title" })
+    .populate({ path: "user", select: "username" });
+  if (!playlist) return res.status(404).json({ error: "Playlist not found" });
+  res.status(200).json(playlist);
 });
 
 exports.create = [
-  body("name").notEmpty().withMessage("Playlist name is required"),
+  playlistValidator(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
-    }
-    // The creator is the current user (set by your JWT authentication middleware)
+
     const playlist = new Playlist({
       name: req.body.name,
       description: req.body.description,
       songs: req.body.songs || [],
-      user: req.user.id,
+      user: req.user.user_id,
     });
     await playlist.save();
-    res.status(201).json(playlist);
+
+    // Sync: add this playlist to each song's playlists array
+    if (playlist.songs.length) {
+      await Song.updateMany(
+        { _id: { $in: playlist.songs } },
+        { $addToSet: { playlists: playlist._id } }
+      );
+    }
+
+    const populated = await Playlist.findById(playlist._id)
+      .populate({ path: "songs", select: "title" })
+      .populate({ path: "user", select: "username" });
+    res.status(201).json(populated);
+  }),
+];
+
+exports.update = [
+  updatePlaylistValidator(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    const playlist = await Playlist.findById(req.params.id);
+    if (!playlist) return res.status(404).json({ error: "Playlist not found" });
+
+    if (playlist.user.toString() !== req.user.user_id && !req.user.is_admin) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    const oldSongs = playlist.songs.map((id) => id.toString());
+    const newSongs = req.body.songs !== undefined ? req.body.songs : oldSongs;
+
+    // Apply updates
+    if (req.body.name !== undefined) playlist.name = req.body.name;
+    if (req.body.description !== undefined)
+      playlist.description = req.body.description;
+    if (req.body.songs !== undefined) playlist.songs = req.body.songs;
+    await playlist.save();
+
+    // Sync: compute differences
+    const toAdd = newSongs.filter((id) => !oldSongs.includes(id));
+    const toRemove = oldSongs.filter((id) => !newSongs.includes(id));
+
+    if (toAdd.length) {
+      await Song.updateMany(
+        { _id: { $in: toAdd } },
+        { $addToSet: { playlists: playlist._id } }
+      );
+    }
+    if (toRemove.length) {
+      await Song.updateMany(
+        { _id: { $in: toRemove } },
+        { $pull: { playlists: playlist._id } }
+      );
+    }
+
+    const populated = await Playlist.findById(playlist._id)
+      .populate({ path: "songs", select: "title" })
+      .populate({ path: "user", select: "username" });
+    res.status(200).json(populated);
   }),
 ];
 
 exports.delete = asyncHandler(async (req, res) => {
   const playlist = await Playlist.findById(req.params.id);
-  if (!playlist) {
-    return res.status(404).json({ error: "Playlist not found" });
-  }
-  // Only the creator is allowed to delete the playlist
-  if (playlist.user.toString() !== req.user.id) {
-    return res
-      .status(403)
-      .json({ error: "You are not authorized to delete this playlist" });
-  }
-  await Playlist.findByIdAndDelete(req.params.id);
-  res.json({ message: "Playlist deleted" });
-});
+  if (!playlist) return res.status(404).json({ error: "Playlist not found" });
 
-exports.update = [
-  body("name")
-    .optional()
-    .notEmpty()
-    .withMessage("Playlist name cannot be empty"),
-  asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const playlist = await Playlist.findById(req.params.id);
-    if (!playlist) {
-      return res.status(404).json({ error: "Playlist not found" });
-    }
-    // Check if the logged-in user is the creator of the playlist
-    if (playlist.user.toString() !== req.user.id) {
-      return res
-        .status(403)
-        .json({ error: "You are not authorized to update this playlist" });
-    }
-    // Update the playlist fields
-    playlist.name = req.body.name;
-    playlist.description = req.body.description;
-    if (req.body.songs) {
-      playlist.songs = req.body.songs;
-    }
-    await playlist.save();
-    res.json(playlist);
-  }),
-];
+  if (playlist.user.toString() !== req.user.user_id && !req.user.is_admin) {
+    return res.status(403).json({ error: "Not authorized" });
+  }
+
+  // Sync: remove playlist from all songs
+  await Song.updateMany(
+    { playlists: playlist._id },
+    { $pull: { playlists: playlist._id } }
+  );
+
+  await Playlist.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: "Playlist deleted" });
+});
