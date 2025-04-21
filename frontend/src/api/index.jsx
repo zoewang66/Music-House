@@ -25,6 +25,6 @@ export const fetchPlaylists = () => api.get("/playlist");
 export const fetchPlaylistById = (id) => api.get(`/playlist/${id}`);
 export const createPlaylist = (data) => api.post("/playlist", data);
 export const updatePlaylist = (id, d) => api.put(`/playlist/${id}`, d);
-export const deletePlaylist = (id) => api.delete(`/playlist/${id}`);
+export const deletePlaylist = (id) => api.delete(`/playlist/${id}`); 
 
 export default api;

@@ -54,7 +54,12 @@ app.use((req, res, next) => {
 });
 
 app.use("/api", indexRouter);
-
+app.use((err, req, res, next) => {
+  console.error("🔥 Unhandled error:", err.stack);
+  res.status(err.status || 500).json({
+    error: err.message || "Internal Server Error",
+  });
+});
 // Port
 const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => {

@@ -48,40 +48,54 @@ const updatePlaylistValidator = () => [
     .withMessage("Each song ID must be valid"),
 ];
 
-exports.list = [
-  query("name").optional().trim(),
-  asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
+// exports.list = [
+//   query("name").optional().trim(),
+//   asyncHandler(async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty())
+//       return res.status(400).json({ errors: errors.array() });
 
-    const filter = {};
-    if (req.query.name) filter.name = new RegExp(req.query.name, "i");
+//     const filter = {};
+//     if (req.query.name) filter.name = new RegExp(req.query.name, "i");
 
-    const options = {
-      page: req.paginate.page,
-      limit: req.paginate.limit,
-      sort: { name: 1 },
-      populate: [
-        { path: "songs", select: "title" },
-        { path: "user", select: "username" },
-      ],
-    };
+//     const options = {
+//       page: req.paginate.page,
+//       limit: req.paginate.limit,
+//       sort: { name: 1 },
+//       populate: [
+//         { path: "songs", select: "title" },
+//         { path: "user", select: "username" },
+//       ],
+//     };
 
-    const result = await Playlist.paginate(filter, options);
-    res
-      .status(200)
-      .links(
-        generatePaginationLinks(
-          req.originalUrl,
-          result.page,
-          result.totalPages,
-          result.limit
-        )
-      )
-      .json(result.docs);
-  }),
-];
+//     const result = await Playlist.paginate(filter, options);
+//     res
+//       .status(200)
+//       .links(
+//         generatePaginationLinks(
+//           req.originalUrl,
+//           result.page,
+//           result.totalPages,
+//           result.limit
+//         )
+//       )
+//       .json(result.docs);
+//   }),
+// ];
+exports.list = asyncHandler(async (req, res) => {
+  // optional: allow name filtering
+  const filter = {};
+  if (req.query.name) {
+    filter.name = new RegExp(req.query.name, "i");
+  }
+
+  const playlists = await Playlist.find(filter)
+    .sort({ name: 1 })
+    .populate({ path: "songs", select: "title" })
+    .populate({ path: "user", select: "username" });
+
+  res.status(200).json(playlists);
+});
 
 exports.detail = asyncHandler(async (req, res) => {
   const playlist = await Playlist.findById(req.params.id)
@@ -94,6 +108,11 @@ exports.detail = asyncHandler(async (req, res) => {
 exports.create = [
   playlistValidator(),
   asyncHandler(async (req, res) => {
+    // 🔍 DEBUG: log what we received and who’s making the request
+    console.log("🛠 create playlist:", {
+      user: req.user, // should be set by your JWT middleware
+      body: req.body, // name, description, songs
+    });
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });

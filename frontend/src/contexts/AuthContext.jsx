@@ -12,13 +12,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUser({ user_id: payload.user_id, is_admin: payload.is_admin });
-      } catch {
-        localStorage.removeItem("token");
-        setToken(null);
-      }
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setUser({ user_id: payload.user_id, is_admin: payload.is_admin });
     }
   }, [token]);
 
@@ -30,10 +25,12 @@ export function AuthProvider({ children }) {
     setToken(jwt);
     const payload = JSON.parse(atob(jwt.split(".")[1]));
     setUser({ user_id: payload.user_id, is_admin: payload.is_admin });
+    navigate("/", { replace: true });
   };
 
   const register = async (username, password) => {
     await apiRegister(username, password);
+    navigate("/login", { replace: true });
   };
 
   const logout = () => {

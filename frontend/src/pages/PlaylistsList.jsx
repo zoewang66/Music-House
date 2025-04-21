@@ -1,0 +1,79 @@
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  SimpleGrid,
+  Card,
+  Text,
+  Button,
+  Group,
+} from "@mantine/core";
+import { Link } from "react-router-dom";
+import { fetchPlaylists, deletePlaylist } from "../api/index";
+
+export default function PlaylistsList() {
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    fetchPlaylists()
+      .then((res) => {
+        console.log("🎬 fetched playlists:", res.data);
+        setPlaylists(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching playlists:", err);
+      });
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this playlist?")) {
+      return;
+    }
+    try {
+      await deletePlaylist(id);
+      // remove it from local state so the UI updates
+      setPlaylists((pls) => pls.filter((pl) => pl._id !== id));
+    } catch (err) {
+      console.error("Failed to delete playlist:", err);
+      alert(
+        err.response?.data?.error ||
+          "Could not delete playlist. Try again later."
+      );
+    }
+  };
+
+  return (
+    <Container mt="md">
+      <Button component={Link} to="/playlists/create" mb="md">
+        + New Playlist
+      </Button>
+
+      {playlists.length === 0 ? (
+        <Text color="dimmed">You have no playlists yet.</Text>
+      ) : (
+        <SimpleGrid cols={2} spacing="md">
+          {playlists.map((pl) => (
+            <Card key={pl._id} shadow="sm" padding="md">
+              <Group position="apart" mb="sm">
+                <Text weight={500}>{pl.name}</Text>
+                <Button
+                  color="red"
+                  size="xs"
+                  variant="subtle"
+                  onClick={() => handleDelete(pl._id)}
+                >
+                  Delete
+                </Button>
+              </Group>
+              <Text size="sm" color="dimmed" mb="sm">
+                {pl.description}
+              </Text>
+              <Button component={Link} to={`/playlists/${pl._id}`} size="xs">
+                View / Edit
+              </Button>
+            </Card>
+          ))}
+        </SimpleGrid>
+      )}
+    </Container>
+  );
+}

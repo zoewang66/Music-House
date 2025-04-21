@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { AppShell, Container, Group, Anchor, Text, Space } from "@mantine/core";
+import React from "react";
+import { AppShell, Container, Group, Anchor, Text } from "@mantine/core";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const links = [
   { link: "/", label: "Home" },
@@ -10,22 +11,9 @@ const links = [
 ];
 
 function Layout() {
-  const [active, setActive] = useState(links[0].link);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-
-  // Check if the user is logged in (based on a JWT or user info in localStorage)
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    setIsAuthenticated(!!token);
-  }, []);
-
-  // Logout function to remove JWT and update state
-  const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    setIsAuthenticated(false);
-    navigate("/"); // Redirect to Home after logout
-  };
+  const { user, logout } = useAuth();
+  const [active, setActive] = React.useState(window.location.pathname);
+  const isAuthenticated = Boolean(user);
 
   // Dynamically create menu items based on authentication status
   const items = links.map((link) => (
@@ -67,7 +55,7 @@ function Layout() {
                   </Anchor>
                 </>
               ) : (
-                <Anchor component="button" onClick={handleLogout}>
+                <Anchor component="button" onClick={logout}>
                   Logout
                 </Anchor>
               )}
