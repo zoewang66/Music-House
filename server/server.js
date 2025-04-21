@@ -4,6 +4,7 @@ const helmet = require("helmet");
 var morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 // Import consolidated routes
@@ -16,6 +17,8 @@ app.use(morgan("combined"));
 app.use(helmet());
 
 // Parse JSON and URL-encoded payloads
+app.use(cors());
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
