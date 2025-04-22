@@ -8,7 +8,7 @@ import {
   Group,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { fetchPlaylists, deletePlaylist } from "../api/index";
+import { fetchPlaylists, deletePlaylist } from "../../api/index";
 
 export default function PlaylistsList() {
   const [playlists, setPlaylists] = useState([]);

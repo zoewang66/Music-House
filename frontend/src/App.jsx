@@ -9,11 +9,13 @@ import NoPage from "./pages/NoPage";
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import Songs from "./pages/Songs";
-import Artists from "./pages/Artists";
 import Playlist from "./pages/Playlists";
 import { PrivateRoute } from "./components/Playlists/PrivateRoute";
-import PlaylistsList from "./pages/PlaylistsList";
+import PlaylistsList from "./components/Playlists/PlaylistsList";
+import SongsList from "./components/Songs/SongsList";
+import SongForm from "./components/Songs/SongForm";
+import ArtistsList from "./components/Artists/ArtistList";
+import ArtistForm from "./components/Artists/ArtistForm";
 
 function App() {
   return (
@@ -22,8 +24,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="songs" element={<Songs />} />
-            <Route path="artists" element={<Artists />} />
+            {/* Songs CRUD */}
+            <Route path="songs" element={<SongsList />} />
+            <Route path="songs/create" element={<SongForm mode="create" />} />
+            <Route path="songs/:id" element={<SongForm mode="edit" />} />
+
+            {/* Artists CRUD */}
+            <Route path="artists" element={<ArtistsList />} />
+            <Route
+              path="artists/create"
+              element={<ArtistForm mode="create" />}
+            />
+            <Route path="artists/:id" element={<ArtistForm mode="edit" />} />
+
             {/* Playlist listing */}
             <Route
               path="playlists"
