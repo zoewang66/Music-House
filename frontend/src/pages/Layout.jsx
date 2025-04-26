@@ -1,8 +1,9 @@
-import React from "react";
-import { AppShell, Container, Group, Anchor, Text } from "@mantine/core";
+import { useState } from "react";
+import { AppShell, Flex, Container, Anchor, Text } from "@mantine/core";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
+// Define your main navigation links
 const links = [
   { link: "/", label: "Home" },
   { link: "/songs", label: "Songs" },
@@ -10,41 +11,50 @@ const links = [
   { link: "/playlists", label: "Playlists" },
 ];
 
-function Layout() {
+export default function Layout() {
+  const [active, setActive] = useState(links[0].link);
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [active, setActive] = React.useState(window.location.pathname);
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = !!user;
 
-  // Dynamically create menu items based on authentication status
-  const items = links.map((link) => (
+  // Build menu items
+  const items = links.map((item) => (
     <Anchor
-      key={link.label}
+      key={item.link}
       component={Link}
-      to={link.link}
-      onClick={() => setActive(link.link)}
-      style={{ marginRight: "15px" }}
-      color={active === link.link ? "blue" : "gray"}
+      to={item.link}
+      onClick={() => setActive(item.link)}
+      color={active === item.link ? "blue" : "gray"}
+      sx={{ fontWeight: active === item.link ? 600 : 400 }}
     >
-      {link.label}
+      {item.label}
     </Anchor>
   ));
 
   return (
     <AppShell
-      header={{ height: 50, padding: "md" }}
+      header={{ height: 60, padding: 0 }}
       padding="md"
       navbarOffsetBreakpoint="sm"
     >
       {/* Header */}
       <AppShell.Header>
-        <Container size="md">
-          <Group position="apart">
-            <Text size="xl" weight={500}>
-              Task Manager
+        <Container size="md" style={{ height: "100%" }}>
+          {/* Full-height Flex for vertical centering, spaced for horizontal */}
+          <Flex
+            style={{ height: "100%" }}
+            align="center"
+            justify="space-between"
+          >
+            {/* Logo / Title */}
+            <Text size="xl" weight={900}>
+              Music House
             </Text>
-            <Group spacing="xs" align="center">
+
+            {/* Nav items + auth links */}
+            <Flex align="center" gap="md">
               {items}
-              {/* Conditionally render login, register, or logout links */}
+
               {!isAuthenticated ? (
                 <>
                   <Anchor component={Link} to="/login" color="blue">
@@ -55,21 +65,19 @@ function Layout() {
                   </Anchor>
                 </>
               ) : (
-                <Anchor component="button" onClick={logout}>
+                <Anchor component="button" onClick={logout} color="red">
                   Logout
                 </Anchor>
               )}
-            </Group>
-          </Group>
+            </Flex>
+          </Flex>
         </Container>
       </AppShell.Header>
 
-      {/* Main Content (Where React Router Renders Pages) */}
+      {/* Main Content */}
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
     </AppShell>
   );
 }
-
-export default Layout;

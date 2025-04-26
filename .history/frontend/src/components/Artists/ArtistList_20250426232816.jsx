@@ -38,8 +38,11 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
-
+  const totalPages = Math.ceil(
+    // note: backend does not return total count; assume no more when less than limit
+    // for display, we only disable Next if fetched count < limit
+    artists.length <= limit ? page : page + 1
+  );
   // simpler: disable Next if fetched artists < limit
 
   const onDelete = async (id) => {
@@ -81,11 +84,8 @@ export default function ArtistsList() {
               >
                 Prev
               </Button>
-              <Text>
-                Page {page} of {totalPages || 1}
-              </Text>
+              <Text>Page {page}</Text>
               <Button
-                color="#346d67"
                 disabled={artists.length < limit}
                 onClick={() => loadPage(page + 1)}
               >

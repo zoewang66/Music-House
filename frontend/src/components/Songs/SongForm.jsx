@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  TextInput,
-  NumberInput,
-  Button,
-  Container,
-  Alert,
-  Select,
-} from "@mantine/core";
+import { TextInput, NumberInput, Button, Alert, Select } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import {
   fetchSongById,
@@ -16,6 +9,7 @@ import {
   updateSong,
   createArtist,
 } from "../../api/index";
+import PageContainer from "../PageContainer";
 
 export default function SongForm({ mode }) {
   const { id } = useParams();
@@ -30,23 +24,22 @@ export default function SongForm({ mode }) {
 
   // Fetch all artists (increase limit if needed)
   // ——— Load all pages of artists to ensure we get more than the backend's page limit ———
-useEffect(() => {
-  async function loadAllArtists() {
-    let page = 1;
-    const limit = 10; // backend page size
-    let all = [];
-    while (true) {
-      const res = await fetchArtists(page, "", limit); // fetchArtists(page, name, limit) :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
-      const data = res.data;
-      all = all.concat(data);
-      if (data.length < limit) break;
-      page++;
+  useEffect(() => {
+    async function loadAllArtists() {
+      let page = 1;
+      const limit = 10; // backend page size
+      let all = [];
+      while (true) {
+        const res = await fetchArtists(page, "", limit); // fetchArtists(page, name, limit) :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
+        const data = res.data;
+        all = all.concat(data);
+        if (data.length < limit) break;
+        page++;
+      }
+      setArtistOptions(all.map((a) => ({ value: a._id, label: a.name })));
     }
-    setArtistOptions(all.map((a) => ({ value: a._id, label: a.name })));
-  }
-  loadAllArtists().catch(console.error);
-}, []);
-
+    loadAllArtists().catch(console.error);
+  }, []);
 
   // If in “edit” mode, preload song data
   useEffect(() => {
@@ -85,7 +78,7 @@ useEffect(() => {
   };
 
   return (
-    <Container size="sm" mt="md">
+    <PageContainer center={true}>
       <h2>{mode === "create" ? "New Song" : "Edit Song"}</h2>
       {error && <Alert color="red">{error}</Alert>}
       <form onSubmit={onSubmit}>
@@ -129,6 +122,6 @@ useEffect(() => {
           {mode === "create" ? "Create" : "Update"}
         </Button>
       </form>
-    </Container>
+    </PageContainer>
   );
 }

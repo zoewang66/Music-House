@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, TextInput, SimpleGrid, Card, Text } from "@mantine/core";
 import { fetchArtists } from "../api/index";
 import { Link } from "react-router-dom";
+import PageContainer from "../components/PageContainer";
 
 export default function Artists() {
   const [artists, setArtists] = useState([]);
@@ -14,7 +15,8 @@ export default function Artists() {
   }, [filter]);
 
   return (
-    <Container>
+    <>
+    
       <TextInput
         placeholder="Search artists"
         value={filter}
@@ -37,6 +39,6 @@ export default function Artists() {
           </Card>
         ))}
       </SimpleGrid>
-    </Container>
+    </>
   );
 }

@@ -19,10 +19,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 
-console.log("🔥 main.jsx loaded");
-
 const rootEl = document.getElementById("root");
-console.log("🔥 rootEl is", rootEl);
 
 createRoot(rootEl).render(
   <StrictMode>

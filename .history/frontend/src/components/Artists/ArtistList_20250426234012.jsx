@@ -38,7 +38,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
+  const totalPages = Math.ceil(totalCount / limit);
 
   // simpler: disable Next if fetched artists < limit
 

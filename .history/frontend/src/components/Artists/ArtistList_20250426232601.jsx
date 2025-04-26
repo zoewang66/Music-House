@@ -38,8 +38,11 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
-
+  const totalPages = Math.ceil(
+    // note: backend does not return total count; assume no more when less than limit
+    // for display, we only disable Next if fetched count < limit
+    artists.length <= limit ? page : page + 1
+  );
   // simpler: disable Next if fetched artists < limit
 
   const onDelete = async (id) => {
@@ -72,26 +75,15 @@ export default function ArtistsList() {
             ))}
           </SimpleGrid>
 
-          <Center>
-            <Group spacing="md" mt="md">
-              <Button
-                color="#346d67"
-                disabled={page === 1}
-                onClick={() => loadPage(page - 1)}
-              >
-                Prev
-              </Button>
-              <Text>
-                Page {page} of {totalPages || 1}
-              </Text>
-              <Button
-                color="#346d67"
-                disabled={artists.length < limit}
-                onClick={() => loadPage(page + 1)}
-              >
-                Next
-              </Button>
-            </Group>
+          <Center mt="md">
+            <Pagination
+              page={page}
+              onChange={loadPage}
+              total={totalPages}
+              siblings={1} 
+              boundaries={1} 
+              color="#346d67"
+            />
           </Center>
         </>
       )}

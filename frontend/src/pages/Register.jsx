@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextInput, PasswordInput, Button, Alert } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
+import PageContainer from "../components/PageContainer";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -61,33 +62,35 @@ const Register = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto" }}>
-      <h2>Register</h2>
-      {error && <Alert color="red">{error}</Alert>}
-      <form onSubmit={handleRegister}>
-        <TextInput
-          label="Username"
-          {...form.getInputProps("username")}
-          required
-          error={form.errors.username}
-        />
-        <PasswordInput
-          label="Password"
-          {...form.getInputProps("password")}
-          required
-          error={form.errors.password}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          mt="sm"
-          loading={loading}
-          disabled={loading}
-        >
-          Register
-        </Button>
-      </form>
-    </div>
+    <PageContainer center={true}>
+      <div style={{ maxWidth: 400, margin: "auto" }}>
+        <h2>Register</h2>
+        {error && <Alert color="red">{error}</Alert>}
+        <form onSubmit={handleRegister}>
+          <TextInput
+            label="Username"
+            {...form.getInputProps("username")}
+            required
+            error={form.errors.username}
+          />
+          <PasswordInput
+            label="Password"
+            {...form.getInputProps("password")}
+            required
+            error={form.errors.password}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            mt="sm"
+            loading={loading}
+            disabled={loading}
+          >
+            Register
+          </Button>
+        </form>
+      </div>
+    </PageContainer>
   );
 };
 

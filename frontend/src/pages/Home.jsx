@@ -1,14 +1,22 @@
 import React from "react";
-import { Container, Title, Text } from "@mantine/core";
+import { AppShell, Box, Container, Title, Text } from "@mantine/core";
 
 function App() {
   return (
-    <Container>
-      <Title order={2} mt="md">
-        Welcome to Music Streaming
-      </Title>
-      <Text mt="sm">Browse artists, songs, and manage your playlists!</Text>
-    </Container>
+    <AppShell.Main>
+      {/* full-width wrapper with optional background */}
+      <Box style={{ width: "100vw", minHeight: "calc(100vh - 60px)" }}>
+        <Container
+          size="md"
+          style={{ textAlign: "center", paddingTop: "4rem" }}
+        >
+          <Title order={2}>Welcome to Music Streaming</Title>
+          <Text size="lg">
+            Browse artists, songs, and manage your playlists!
+          </Text>
+        </Container>
+      </Box>
+    </AppShell.Main>
   );
 }
 

@@ -14,6 +14,7 @@ import {
   updateArtist,
   deleteSong,
 } from "../../api/index";
+import PageContainer from "../PageContainer";
 
 export default function ArtistForm({ mode }) {
   const { id } = useParams();
@@ -86,7 +87,7 @@ export default function ArtistForm({ mode }) {
   };
 
   return (
-    <Container size="sm" mt="md">
+    <PageContainer center={true}>
       <h2>{mode === "create" ? "New Artist" : "Edit Artist"}</h2>
       {error && <Alert color="red">{error}</Alert>}
       <form onSubmit={onSubmit}>
@@ -131,6 +132,6 @@ export default function ArtistForm({ mode }) {
           {mode === "create" ? "Create" : "Update"}
         </Button>
       </form>
-    </Container>
+    </PageContainer>
   );
 }

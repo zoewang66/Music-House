@@ -17,6 +17,7 @@ export default function ArtistsList() {
   const [artists, setArtists] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
   const limit = 9;
 
   // load page p
@@ -38,7 +39,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
+  const totalPages = Math.ceil(totalCount / limit);
 
   // simpler: disable Next if fetched artists < limit
 

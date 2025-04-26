@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  SimpleGrid,
-  Card,
-  Text,
-  Button,
-  Group,
-} from "@mantine/core";
+import { SimpleGrid, Card, Text, Button, Group, Center } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { fetchPlaylists, deletePlaylist } from "../../api/index";
+import PageContainer from "../PageContainer";
 
 export default function PlaylistsList() {
   const [playlists, setPlaylists] = useState([]);
@@ -42,8 +36,8 @@ export default function PlaylistsList() {
   };
 
   return (
-    <Container mt="md">
-      <Button component={Link} to="/playlists/create" mb="md">
+    <PageContainer center={playlists.length === 0}>
+      <Button component={Link} to="/playlists/create" mb="xl">
         + New Playlist
       </Button>
 
@@ -74,6 +68,6 @@ export default function PlaylistsList() {
           ))}
         </SimpleGrid>
       )}
-    </Container>
+    </PageContainer>
   );
 }

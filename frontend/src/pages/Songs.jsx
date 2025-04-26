@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, SimpleGrid, Card, Text } from "@mantine/core";
+import { SimpleGrid, Card, Text } from "@mantine/core";
 import { fetchSongs } from "../api/index";
 import { Link } from "react-router-dom";
+import PageContainer from "../components/PageContainer";
 
 export default function Songs() {
   const [songs, setSongs] = useState([]);
@@ -13,7 +14,7 @@ export default function Songs() {
   }, []);
 
   return (
-    <Container mt="md">
+    <PageContainer center={true}>
       <SimpleGrid cols={3} spacing="md">
         {songs.map((song) => (
           <Card
@@ -28,6 +29,6 @@ export default function Songs() {
           </Card>
         ))}
       </SimpleGrid>
-    </Container>
+    </PageContainer>
   );
 }

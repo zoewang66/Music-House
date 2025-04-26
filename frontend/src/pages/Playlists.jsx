@@ -14,6 +14,7 @@ import {
   updatePlaylist,
   fetchPlaylistById,
 } from "../api/index";
+import PageContainer from "../components/PageContainer";
 
 export default function Playlist({ mode }) {
   const { id } = useParams();
@@ -69,7 +70,7 @@ export default function Playlist({ mode }) {
   };
 
   return (
-    <Container mt="md">
+    <PageContainer center={true}>
       <TextInput
         label="Name"
         value={name}
@@ -93,6 +94,6 @@ export default function Playlist({ mode }) {
       <Button onClick={handleSubmit} mt="md">
         {mode === "create" ? "Create" : "Update"} Playlist
       </Button>
-    </Container>
+    </PageContainer>
   );
 }
