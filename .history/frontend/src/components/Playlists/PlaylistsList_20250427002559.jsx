@@ -38,7 +38,7 @@ export default function PlaylistsList() {
 
   return (
     <PageContainer center={playlists.length === 0}>
-      <Button component={Link} to="/playlists/create" mb="xl" color="#346d67">
+      <Button component={Link} to="/playlists/create" mb="xl">
         Add New Playlist
       </Button>
 

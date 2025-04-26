@@ -11,7 +11,7 @@ export default function PlaylistsList() {
   useEffect(() => {
     fetchPlaylists()
       .then((res) => {
-        console.log("fetched playlists:", res.data);
+        console.log("🎬 fetched playlists:", res.data);
         setPlaylists(res.data);
       })
       .catch((err) => {
@@ -38,8 +38,8 @@ export default function PlaylistsList() {
 
   return (
     <PageContainer center={playlists.length === 0}>
-      <Button component={Link} to="/playlists/create" mb="xl" color="#346d67">
-        Add New Playlist
+      <Button component={Link} to="/playlists/create" mb="xl">
+        + New Playlist
       </Button>
 
       {playlists.length === 0 ? (
@@ -53,7 +53,7 @@ export default function PlaylistsList() {
           }}
         >
           {playlists.map((pl) => (
-            <PlaylistCard key={pl._id} pl={pl} onDelete={handleDelete} />
+           <PlaylistCard key={pl._id} pl={pl} onDelete={onDelete}/>
           ))}
         </SimpleGrid>
       )}

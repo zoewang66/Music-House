@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { fetchPlaylists, deletePlaylist } from "../../api/index";
 import PageContainer from "../PageContainer";
 import PlaylistCard from "./PlaylistCard";
+import { fetchPlaylists, deletePlaylist } from "../../api/index";
 
 export default function PlaylistsList() {
   const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchPlaylists()
@@ -38,8 +40,8 @@ export default function PlaylistsList() {
 
   return (
     <PageContainer center={playlists.length === 0}>
-      <Button component={Link} to="/playlists/create" mb="xl" color="#346d67">
-        Add New Playlist
+      <Button component={Link} to="/playlists/create" mb="xl">
+        + New Playlist
       </Button>
 
       {playlists.length === 0 ? (

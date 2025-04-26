@@ -14,19 +14,20 @@ import PageContainer from "../PageContainer";
 import ArtistCard from "./ArtistCard";
 
 export default function ArtistsList() {
-  const [artists, setArtists] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const limit = 9;
-
+  // const [artists, setArtists] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const [loading, setLoading] = useState(false);
+  // const limit = 9;
+  
   // load page p
   const loadPage = async (p) => {
     setLoading(true);
     try {
       const res = await fetchArtists(p, "", limit);
-
+     
       setArtists(res.data);
       setPage(p);
+      
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,7 +40,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
+  // const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
 
   // simpler: disable Next if fetched artists < limit
 
@@ -77,7 +78,8 @@ export default function ArtistsList() {
             <Group spacing="md" mt="md">
               <Button
                 color="#346d67"
-                disabled={page === 1}
+                // disabled={page === 1}
+                disabled={!hasPrevPage}
                 onClick={() => loadPage(page - 1)}
               >
                 Prev
@@ -87,7 +89,8 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                // disabled={artists.length < limit}
+                disabled={!hasNextPage}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

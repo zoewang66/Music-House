@@ -90,15 +90,8 @@ exports.list = [
         limit: artistPage.limit,
         page: artistPage.page,
         totalPages: artistPage.totalPages,
-        hasPrevPage: artistPage.hasPrevPage,
-        hasNextPage: artistPage.hasNextPage,
-        prevPage: artistPage.prevPage,
-        nextPage: artistPage.nextPage,
-        pagingCounter: artistPage.pagingCounter,
-        isFirstPage: artistPage.isFirstPage,
-        isLastPage: artistPage.isLastPage,
-      });
   }),
+)
 ];
 
 // GET /api/artist/:id

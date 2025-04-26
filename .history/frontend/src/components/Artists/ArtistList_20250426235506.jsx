@@ -23,10 +23,9 @@ export default function ArtistsList() {
   const loadPage = async (p) => {
     setLoading(true);
     try {
-      const res = await fetchArtists(p, "", limit);
-
-      setArtists(res.data);
-      setPage(p);
+      // const res = await fetchArtists(p, "", limit);
+      // setArtists(res.data);
+      // setPage(p);
     } catch (err) {
       console.error(err);
     } finally {
@@ -83,7 +82,7 @@ export default function ArtistsList() {
                 Prev
               </Button>
               <Text>
-                Page {page} of {totalPages}
+                Page {page} of {totalPages || 1}
               </Text>
               <Button
                 color="#346d67"

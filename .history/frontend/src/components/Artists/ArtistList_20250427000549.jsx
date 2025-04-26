@@ -14,8 +14,15 @@ import PageContainer from "../PageContainer";
 import ArtistCard from "./ArtistCard";
 
 export default function ArtistsList() {
+  // const [artists, setArtists] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const [loading, setLoading] = useState(false);
+  // const limit = 9;
   const [artists, setArtists] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const [loading, setLoading] = useState(false);
   const limit = 9;
 
@@ -24,9 +31,22 @@ export default function ArtistsList() {
     setLoading(true);
     try {
       const res = await fetchArtists(p, "", limit);
-
-      setArtists(res.data);
-      setPage(p);
+      setArtists(res.data.docs);
+      // setArtists(res.data);
+      // setPage(p);
+      const {
+        docs,
+        totalPages: tp,
+        hasPrevPage: prev,
+        hasNextPage: next,
+        page: current,
+      } = res.data;
+  
+      setArtists(docs);
+      setTotalPages(tp);
+      setHasPrevPage(prev);
+      setHasNextPage(next);
+      setPage(current);
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,7 +59,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
+  // const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
 
   // simpler: disable Next if fetched artists < limit
 
@@ -77,7 +97,8 @@ export default function ArtistsList() {
             <Group spacing="md" mt="md">
               <Button
                 color="#346d67"
-                disabled={page === 1}
+                // disabled={page === 1}
+                disabled={!hasPrevPage}
                 onClick={() => loadPage(page - 1)}
               >
                 Prev
@@ -87,7 +108,8 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                // disabled={artists.length < limit}
+                disabled={!hasNextPage}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

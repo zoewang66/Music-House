@@ -97,7 +97,6 @@ exports.list = [
         pagingCounter: artistPage.pagingCounter,
         isFirstPage: artistPage.isFirstPage,
         isLastPage: artistPage.isLastPage,
-      });
   }),
 ];
 
