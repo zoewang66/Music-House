@@ -40,6 +40,7 @@ export default function ArtistsList() {
     artists.length - limit > limit ? page : page + 1
   );
 
+
   // simpler: disable Next if fetched artists < limit
 
   const onDelete = async (id) => {
@@ -86,7 +87,7 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                disabled={page === totalPages || totalPages === 0}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

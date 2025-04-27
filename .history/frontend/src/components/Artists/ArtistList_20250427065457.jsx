@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { SimpleGrid, Text, Button, Group, Loader, Center } from "@mantine/core";
+import {
+  SimpleGrid,
+  Text,
+  Button,
+  Group,
+  Loader,
+  Center,
+} from "@mantine/core";
 import { fetchArtists, deleteArtist } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
@@ -16,6 +23,7 @@ export default function ArtistsList() {
     setLoading(true);
     try {
       const res = await fetchArtists(p, "", limit);
+
       setArtists(res.data);
       setPage(p);
     } catch (err) {
@@ -30,15 +38,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  useEffect(() => {
-    fetchArtists()
-      .then((res) => setArtists(res.data))
-      .catch(console.error);
-  }, []);
-
-  const totalPages = Math.ceil(
-    artists.length - limit > limit ? page : page + 1
-  );
+  const totalPages = Math.ceil(artists.length < limit ? page : page + 1);
 
   // simpler: disable Next if fetched artists < limit
 

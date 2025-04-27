@@ -17,16 +17,6 @@ async function seed() {
 
   // 3) Real artists list
   const artistsData = [
-    {
-      name: "The Beatles",
-      genre: "Rock",
-      bio: "Legendary rock band from Liverpool.",
-    },
-    {
-      name: "Adele",
-      genre: "Pop/Soul",
-      bio: "English singer-songwriter known for soul-stirring ballads.",
-    },
     { name: "Drake", genre: "Hip Hop", bio: "Canadian rapper and singer." },
     {
       name: "Coldplay",
@@ -99,6 +89,12 @@ async function seed() {
       genre: "Pop/Funk",
       bio: "Singer known for retro-pop and funk influences.",
     },
+    { name: "Maroon 5", genre: "Pop/Rock", bio: "American pop-rock band." },
+    {
+      name: "Justin Bieber",
+      genre: "Pop/R&B",
+      bio: "Canadian pop star discovered on YouTube.",
+    },
   ];
 
   // 4) Insert artists
@@ -107,46 +103,6 @@ async function seed() {
 
   // 5) Explicit songs per artist
   const songsData = [
-    // 1. The Beatles
-    {
-      title: "Hey Jude",
-      duration: 431,
-      releaseDate: new Date("1968-08-26"),
-      artist: artists[0]._id,
-    },
-    {
-      title: "Let It Be",
-      duration: 243,
-      releaseDate: new Date("1970-03-06"),
-      artist: artists[0]._id,
-    },
-    {
-      title: "Come Together",
-      duration: 259,
-      releaseDate: new Date("1969-10-06"),
-      artist: artists[0]._id,
-    },
-
-    // 2. Adele
-    {
-      title: "Hello",
-      duration: 295,
-      releaseDate: new Date("2015-10-23"),
-      artist: artists[1]._id,
-    },
-    {
-      title: "Rolling in the Deep",
-      duration: 228,
-      releaseDate: new Date("2010-11-29"),
-      artist: artists[1]._id,
-    },
-    {
-      title: "Skyfall",
-      duration: 286,
-      releaseDate: new Date("2012-10-05"),
-      artist: artists[1]._id,
-    },
-
     // 3. Drake
     {
       title: "God’s Plan",
@@ -466,11 +422,51 @@ async function seed() {
       releaseDate: new Date("2014-11-10"),
       artist: artists[17]._id,
     },
+
+    // 19. Maroon 5
+    {
+      title: "Sugar",
+      duration: 235,
+      releaseDate: new Date("2015-01-13"),
+      artist: artists[18]._id,
+    },
+    {
+      title: "Animals",
+      duration: 231,
+      releaseDate: new Date("2014-11-10"),
+      artist: artists[18]._id,
+    },
+    {
+      title: "Memories",
+      duration: 189,
+      releaseDate: new Date("2019-09-20"),
+      artist: artists[18]._id,
+    },
+
+    // 20. Justin Bieber
+    {
+      title: "Baby",
+      duration: 213,
+      releaseDate: new Date("2010-01-18"),
+      artist: artists[19]._id,
+    },
+    {
+      title: "Sorry",
+      duration: 200,
+      releaseDate: new Date("2015-10-22"),
+      artist: artists[19]._id,
+    },
+    {
+      title: "Love Yourself",
+      duration: 234,
+      releaseDate: new Date("2015-11-09"),
+      artist: artists[19]._id,
+    },
   ];
 
   // 6) Insert songs
   const songs = await Song.insertMany(songsData);
-  console.log(`✅ Seeded ${songs.length} songs`);
+  console.log(`Seeded ${songs.length} songs`);
 
   // 7) Update each artist’s songs array
   const mapping = songs.reduce((map, song) => {

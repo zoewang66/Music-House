@@ -94,11 +94,6 @@ async function seed() {
       genre: "R&B/Pop",
       bio: "Multi-platinum singer and performer.",
     },
-    {
-      name: "Bruno Mars",
-      genre: "Pop/Funk",
-      bio: "Singer known for retro-pop and funk influences.",
-    },
   ];
 
   // 4) Insert artists
@@ -447,24 +442,24 @@ async function seed() {
       artist: artists[16]._id,
     },
 
-    // 18. Bruno Mars
+    // 18. Justin Bieber
     {
-      title: "Just the Way You Are",
-      duration: 221,
-      releaseDate: new Date("2010-07-20"),
+      title: "Baby",
+      duration: 213,
+      releaseDate: new Date("2010-01-18"),
       artist: artists[17]._id,
     },
     {
-      title: "Grenade",
-      duration: 223,
-      releaseDate: new Date("2010-09-28"),
-      artist: artists[17]._id,
+      title: "Sorry",
+      duration: 200,
+      releaseDate: new Date("2015-10-22"),
+      artist: artists[19]._id,
     },
     {
-      title: "Uptown Funk",
-      duration: 269,
-      releaseDate: new Date("2014-11-10"),
-      artist: artists[17]._id,
+      title: "Love Yourself",
+      duration: 234,
+      releaseDate: new Date("2015-11-09"),
+      artist: artists[19]._id,
     },
   ];
 

@@ -69,31 +69,31 @@ export default function Playlist({ mode }) {
       });
   };
 
-  return (
-    <PageContainer center={true}>
-      <TextInput
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
-        required
-      />
-      <Textarea
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.currentTarget.value)}
-        mt="md"
-      />
-      <MultiSelect
-        data={allSongs}
-        label="Songs"
-        placeholder="Select songs"
-        value={selected}
-        onChange={setSelected}
-        mt="md"
-      />
-      <Button color="#346d67" onClick={handleSubmit} mt="md">
-        {mode === "create" ? "Create" : "Update"} Playlist
-      </Button>
-    </PageContainer>
-  );
+  // return (
+  //   <PageContainer center={true}>
+  //     <TextInput
+  //       label="Name"
+  //       value={name}
+  //       onChange={(e) => setName(e.currentTarget.value)}
+  //       required
+  //     />
+  //     <Textarea
+  //       label="Description"
+  //       value={description}
+  //       onChange={(e) => setDescription(e.currentTarget.value)}
+  //       mt="md"
+  //     />
+  //     <MultiSelect
+  //       data={allSongs}
+  //       label="Songs"
+  //       placeholder="Select songs"
+  //       value={selected}
+  //       onChange={setSelected}
+  //       mt="md"
+  //     />
+  //     <Button color="#346d67" onClick={handleSubmit} mt="md">
+  //       {mode === "create" ? "Create" : "Update"} Playlist
+  //     </Button>
+  //   </PageContainer>
+  // );
 }

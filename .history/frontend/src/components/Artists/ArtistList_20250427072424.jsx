@@ -8,7 +8,7 @@ import ArtistCard from "./ArtistCard";
 export default function ArtistsList() {
   const [artists, setArtists] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const limit = 9;
 
   // load page p
@@ -36,9 +36,12 @@ export default function ArtistsList() {
       .catch(console.error);
   }, []);
 
-  const totalPages = Math.ceil(
-    artists.length - limit > limit ? page : page + 1
-  );
+  // const totalPages = Math.ceil(
+  //   artists.length - limit > limit ? page : page + 1
+  // );
+  const totalPages = Math.ceil(artists.length / limit);
+  const start = (page - 1) * limit;
+  const displayArtists = artists.slice(start, start + limit);
 
   // simpler: disable Next if fetched artists < limit
 
@@ -86,7 +89,7 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                disabled={page === totalPages || totalPages === 0}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

@@ -12,33 +12,36 @@ export default function ArtistsList() {
   const limit = 9;
 
   // load page p
-  const loadPage = async (p) => {
-    setLoading(true);
-    try {
-      const res = await fetchArtists(p, "", limit);
-      setArtists(res.data);
-      setPage(p);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const loadPage = async (p) => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetchArtists(p, "", limit);
+  //     setArtists(res.data);
+  //     setPage(p);
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // initial load
-  useEffect(() => {
-    loadPage(1);
-  }, []);
+  // useEffect(() => {
+  //   loadPage(1);
+  // }, []);
 
   useEffect(() => {
-    fetchArtists()
-      .then((res) => setArtists(res.data))
-      .catch(console.error);
-  }, []);
+      fetchArtists()
+        .then((res) => setArtists(res.data))
+        .catch(console.error);
+    }, []);
 
-  const totalPages = Math.ceil(
-    artists.length - limit > limit ? page : page + 1
-  );
+  // const totalPages = Math.ceil(
+  //   artists.length - limit > limit ? page : page + 1
+  // );
+  const totalPages = Math.ceil(artists.length / limit);
+  const start = (page - 1) * limit;
+  const displayArtists = artists.slice(start, start + limit);
 
   // simpler: disable Next if fetched artists < limit
 
@@ -86,7 +89,7 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                disabled={page === totalPages || totalPages === 0}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

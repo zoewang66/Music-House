@@ -83,7 +83,8 @@ exports.list = [
           artistPage.limit
         )
       )
-      .json(docsWithSongs);
+      // .json(docsWithSongs);
+  
   }),
 ];
 

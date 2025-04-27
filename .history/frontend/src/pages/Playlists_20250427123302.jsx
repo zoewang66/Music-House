@@ -14,7 +14,8 @@ import {
   updatePlaylist,
   fetchPlaylistById,
 } from "../api/index";
-import PageContainer from "../components/PageContainer";
+
+import PlaylistsFormFields from "../components/PlaylistFormFields";
 
 export default function Playlist({ mode }) {
   const { id } = useParams();
@@ -69,31 +70,49 @@ export default function Playlist({ mode }) {
       });
   };
 
+  // return (
+
+  //   <PageContainer center={true}>
+  //     <TextInput
+  //       label="Name"
+  //       value={name}
+  //       onChange={(e) => setName(e.currentTarget.value)}
+  //       required
+  //     />
+  //     <Textarea
+  //       label="Description"
+  //       value={description}
+  //       onChange={(e) => setDescription(e.currentTarget.value)}
+  //       mt="md"
+  //     />
+  //     <MultiSelect
+  //       data={allSongs}
+  //       label="Songs"
+  //       placeholder="Select songs"
+  //       value={selected}
+  //       onChange={setSelected}
+  //       mt="md"
+  //     />
+  //     <Button color="#346d67" onClick={handleSubmit} mt="md">
+  //       {mode === "create" ? "Create" : "Update"} Playlist
+  //     </Button>
+  //   </PageContainer>
+  // );
+
   return (
-    <PageContainer center={true}>
-      <TextInput
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
-        required
+    <>
+      <PlaylistsFormFields
+        name={name}
+        onNameChange={setName}
+        description={description}
+        onDescriptionChange={setDescription}
+        allSongs={allSongs}
+        selected={selected}
+        onSelectedChange={setSelected}
       />
-      <Textarea
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.currentTarget.value)}
-        mt="md"
-      />
-      <MultiSelect
-        data={allSongs}
-        label="Songs"
-        placeholder="Select songs"
-        value={selected}
-        onChange={setSelected}
-        mt="md"
-      />
-      <Button color="#346d67" onClick={handleSubmit} mt="md">
-        {mode === "create" ? "Create" : "Update"} Playlist
+      <Button color="#346d67" onClick={handleSubmit} mt="xl">
+        Save Playlist
       </Button>
-    </PageContainer>
+    </>
   );
 }

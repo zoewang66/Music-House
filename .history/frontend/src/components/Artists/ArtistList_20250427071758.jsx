@@ -30,15 +30,12 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  useEffect(() => {
-    fetchArtists()
-      .then((res) => setArtists(res.data))
-      .catch(console.error);
-  }, []);
-
-  const totalPages = Math.ceil(
-    artists.length - limit > limit ? page : page + 1
-  );
+  // const totalPages = Math.ceil(
+  //   artists.length - limit > limit ? page : page + 1
+  // );
+  const totalPages = Math.ceil(allSongs.length / limit);
+  const start = (page - 1) * limit;
+  const displaySongs = allSongs.slice(start, start + limit);
 
   // simpler: disable Next if fetched artists < limit
 
@@ -86,7 +83,7 @@ export default function ArtistsList() {
               </Text>
               <Button
                 color="#346d67"
-                disabled={artists.length < limit}
+                disabled={artists.length - limit < 0}
                 onClick={() => loadPage(page + 1)}
               >
                 Next

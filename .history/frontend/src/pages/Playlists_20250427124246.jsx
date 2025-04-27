@@ -16,6 +16,7 @@ import {
 } from "../api/index";
 import PageContainer from "../components/PageContainer";
 
+
 export default function Playlist({ mode }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -96,4 +97,6 @@ export default function Playlist({ mode }) {
       </Button>
     </PageContainer>
   );
+
+  
 }

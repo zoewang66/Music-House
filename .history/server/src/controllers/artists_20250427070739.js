@@ -84,6 +84,7 @@ exports.list = [
         )
       )
       .json(docsWithSongs);
+  
   }),
 ];
 

@@ -40,6 +40,7 @@ export default function ArtistsList() {
     artists.length - limit > limit ? page : page + 1
   );
 
+
   // simpler: disable Next if fetched artists < limit
 
   const onDelete = async (id) => {

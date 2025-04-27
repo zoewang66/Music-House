@@ -30,15 +30,7 @@ export default function ArtistsList() {
     loadPage(1);
   }, []);
 
-  useEffect(() => {
-    fetchArtists()
-      .then((res) => setArtists(res.data))
-      .catch(console.error);
-  }, []);
-
-  const totalPages = Math.ceil(
-    artists.length - limit > limit ? page : page + 1
-  );
+  const totalPages = Math.ceil(artists.length - limit < limit ? page : page + 1);
 
   // simpler: disable Next if fetched artists < limit
 

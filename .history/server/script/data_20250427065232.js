@@ -94,11 +94,6 @@ async function seed() {
       genre: "R&B/Pop",
       bio: "Multi-platinum singer and performer.",
     },
-    {
-      name: "Bruno Mars",
-      genre: "Pop/Funk",
-      bio: "Singer known for retro-pop and funk influences.",
-    },
   ];
 
   // 4) Insert artists
@@ -465,6 +460,46 @@ async function seed() {
       duration: 269,
       releaseDate: new Date("2014-11-10"),
       artist: artists[17]._id,
+    },
+
+    // 19. Maroon 5
+    {
+      title: "Sugar",
+      duration: 235,
+      releaseDate: new Date("2015-01-13"),
+      artist: artists[18]._id,
+    },
+    {
+      title: "Animals",
+      duration: 231,
+      releaseDate: new Date("2014-11-10"),
+      artist: artists[18]._id,
+    },
+    {
+      title: "Memories",
+      duration: 189,
+      releaseDate: new Date("2019-09-20"),
+      artist: artists[18]._id,
+    },
+
+    // 20. Justin Bieber
+    {
+      title: "Baby",
+      duration: 213,
+      releaseDate: new Date("2010-01-18"),
+      artist: artists[19]._id,
+    },
+    {
+      title: "Sorry",
+      duration: 200,
+      releaseDate: new Date("2015-10-22"),
+      artist: artists[19]._id,
+    },
+    {
+      title: "Love Yourself",
+      duration: 234,
+      releaseDate: new Date("2015-11-09"),
+      artist: artists[19]._id,
     },
   ];
 

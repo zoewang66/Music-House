@@ -466,6 +466,8 @@ async function seed() {
       releaseDate: new Date("2014-11-10"),
       artist: artists[17]._id,
     },
+
+    
   ];
 
   // 6) Insert songs

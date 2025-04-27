@@ -16,6 +16,7 @@ import {
 } from "../api/index";
 import PageContainer from "../components/PageContainer";
 
+
 export default function Playlist({ mode }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -96,4 +97,21 @@ export default function Playlist({ mode }) {
       </Button>
     </PageContainer>
   );
+
+  // return (
+  //   <>
+  //     <PlaylistsFormFields
+  //       name={name}
+  //       onNameChange={setName}
+  //       description={description}
+  //       onDescriptionChange={setDescription}
+  //       allSongs={allSongs}
+  //       selected={selected}
+  //       onSelectedChange={setSelected}
+  //     />
+  //     <Button color="#346d67" onClick={handleSubmit} mt="xl">
+  //       Save Playlist
+  //     </Button>
+  //   </>
+  // );
 }

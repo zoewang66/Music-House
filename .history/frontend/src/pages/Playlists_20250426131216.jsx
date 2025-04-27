@@ -91,7 +91,7 @@ export default function Playlist({ mode }) {
         onChange={setSelected}
         mt="md"
       />
-      <Button color="#346d67" onClick={handleSubmit} mt="md">
+      <Button onClick={handleSubmit} mt="md">
         {mode === "create" ? "Create" : "Update"} Playlist
       </Button>
     </PageContainer>
