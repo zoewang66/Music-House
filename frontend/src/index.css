@@ -13,13 +13,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
 
 
-a {
+
+/* a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
-}
+} */
 
 a:hover {
   color: #87c1b7;
@@ -51,26 +56,3 @@ button {
   transition: border-color 0.25s;
 }
 
-/* button:hover {
-  border-color: #AF1B3F;
-} */
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #5DA399;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #ABDAFC;
-  } */
-/* } */

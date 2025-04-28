@@ -97,12 +97,15 @@ export default function Login() {
 
           <Text size="sm" align="center">
             Don’t have an account?{" "}
-            <Anchor component={Link} to="/register"
-             styles={{
-              root: {
-                color: "#5DA399",
-              },
-            }}>
+            <Anchor
+              component={Link}
+              to="/register"
+              styles={{
+                root: {
+                  color: "#5DA399",
+                },
+              }}
+            >
               Register here
             </Anchor>
           </Text>

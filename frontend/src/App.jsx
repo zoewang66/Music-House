@@ -1,5 +1,5 @@
 import { MantineProvider } from "@mantine/core";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
@@ -9,6 +9,7 @@ import NoPage from "./pages/NoPage";
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/carousel/styles.css";
 import Playlist from "./pages/Playlists";
 import { PrivateRoute } from "./components/Playlists/PrivateRoute";
 import PlaylistsList from "./components/Playlists/PlaylistsList";

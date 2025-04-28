@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  SimpleGrid,
-  Text,
-  Button,
-  Group,
-  Center,
-} from "@mantine/core";
+import { SimpleGrid, Text, Button, Group, Center } from "@mantine/core";
 import { fetchSongs, deleteSong } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
@@ -56,15 +50,19 @@ export default function SongsList() {
       </SimpleGrid>
 
       <Center mt="xxxl">
-      <Group position="center" spacing="md" mt="md">
-          <Button color="#346d67" disabled={page === 1} onClick={() => setPage(page - 1)}>
+        <Group position="center" spacing="md" mt="md">
+          <Button
+            color="#346d67"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
             Prev
           </Button>
           <Text>
             Page {page} of {totalPages || 1}
           </Text>
           <Button
-          color="#346d67"
+            color="#346d67"
             disabled={page === totalPages || totalPages === 0}
             onClick={() => setPage(page + 1)}
           >

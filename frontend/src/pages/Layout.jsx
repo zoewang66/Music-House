@@ -35,10 +35,10 @@ export default function Layout() {
       styles={(theme) => ({
         root: {
           color:
-            active === item.link
-              ? theme.colors.teal[9] // active link color
-              : theme.colors.gray[9], // default link color
-          fontWeight: active === item.link ? 500 : 400,
+            active === item.link ? theme.colors.teal[9] : theme.colors.gray[9],
+          fontWeight: active === item.link ? 700 : 400,
+          fontSize: "1.2rem",
+          fontFamily: "Bellota",
           textDecoration: "none",
           padding: "0.25rem 0.5rem",
           borderRadius: theme.radius.sm,
@@ -71,7 +71,16 @@ export default function Layout() {
             justify="space-between"
           >
             {/* Logo / Title */}
-            <Text size="xl" weight={900} color={theme.colors.teal[9]}>
+            <Text
+              size="xl"
+              weight={900}
+              color={theme.colors.teal[9]}
+              style={{
+                fontFamily: "Bellota",
+                fontSize: "1.5rem",
+                fontWeight: 700,
+              }}
+            >
               Music House
             </Text>
 
@@ -88,6 +97,9 @@ export default function Layout() {
                       root: {
                         color: theme.colors.yellow[8],
                         textDecoration: "none",
+                        fontFamily: "Bellota",
+                        fontSize: "1.2rem",
+                        fontWeight: 400,
                       },
                     }}
                   >
@@ -100,6 +112,9 @@ export default function Layout() {
                       root: {
                         color: theme.colors.yellow[8],
                         textDecoration: "none",
+                        fontFamily: "Bellota",
+                        fontSize: "1.2rem",
+                        fontWeight: 400,
                       },
                     }}
                   >
@@ -114,6 +129,9 @@ export default function Layout() {
                     root: {
                       color: theme.colors.yellow[8],
                       textDecoration: "none",
+                      fontFamily: "Bellota",
+                      fontSize: "1.2rem",
+                      fontWeight: 400,
                     },
                   }}
                 >
@@ -126,7 +144,7 @@ export default function Layout() {
       </AppShell.Header>
 
       {/* Main Content */}
-      <AppShell.Main>
+      <AppShell.Main style={{ width: "100%", minHeight: "calc(100vh - 60px)" }}>
         <Outlet />
       </AppShell.Main>
     </AppShell>
