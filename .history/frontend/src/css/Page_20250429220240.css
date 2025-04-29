@@ -1,0 +1,30 @@
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    gap: 25px;
+    justify-content: center;
+    margin-bottom: 3rem;
+    margin-top: 5rem;
+}
+
+.add-btn {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-style: normal;
+    color: white;
+    background-color: #346d67;
+    
+}
+
+.pagination-text {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}

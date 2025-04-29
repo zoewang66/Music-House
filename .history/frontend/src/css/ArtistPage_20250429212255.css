@@ -1,0 +1,10 @@
+.artist-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+style={{
+    gridTemplateColumns: "repeat(3, 300px)",
+    justifyContent: "center",
+  }}

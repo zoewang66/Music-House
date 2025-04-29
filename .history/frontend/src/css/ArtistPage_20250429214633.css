@@ -1,0 +1,16 @@
+.artist-card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    gap: 20px;
+    justify-content: center;
+}
+
+.add-btn {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-style: normal;
+    color: white;
+    background-color: #346d67;
+    padding-bottom: ;
+}

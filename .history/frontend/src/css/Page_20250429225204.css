@@ -1,0 +1,65 @@
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    gap: 45px;
+    justify-content: center;
+    margin-bottom: 3rem;
+    margin-top: 5rem;
+}
+
+.add-btn,
+#add-btn {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-style: normal;
+    color: white;
+    background-color: #346d67;
+}
+
+.add-btn:hover,
+#add-btn:hover {
+    background-color: #D5CFE1;
+    color: black;
+}
+
+#add-btn {
+    margin-top: 2rem;
+    display: ;
+}
+
+.pagination-text {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+
+@media (max-width: 978px) {
+    .card-list {
+        grid-template-columns: repeat(2, 300px);
+        gap: 35px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 678px) {
+    .card-list {
+        grid-template-columns: repeat(1, 320px);
+        gap: 35px;
+        justify-content: center;
+    }
+
+    #add-btn {
+        margin-top: 5rem;
+    }
+
+
+}
