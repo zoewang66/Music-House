@@ -23,7 +23,7 @@ export default function SongsList() {
   const lastLoadRef = useRef(0);
 
   // fetch one page at a time
-  const loadPage = async (p, onUserAction = false) => {
+  const loadPage = async (p) => {
     // rate-limit: ignore any calls <300ms after the previous
     const now = Date.now();
     if (onUserAction && now - lastLoadRef.current < 300) {
@@ -93,7 +93,7 @@ export default function SongsList() {
             <Button
               color="#346d67"
               disabled={page === 1}
-              onClick={() => loadPage(page - 1, true)}
+              onClick={() => loadPage(page - 1)}
             >
               Prev
             </Button>
@@ -103,7 +103,7 @@ export default function SongsList() {
             <Button
               color="#346d67"
               disabled={page === totalPages}
-              onClick={() => loadPage(page + 1, true)}
+              onClick={() => loadPage(page - 1, true)}
             >
               Next
             </Button>

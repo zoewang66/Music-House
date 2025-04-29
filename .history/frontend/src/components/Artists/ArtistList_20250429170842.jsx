@@ -22,7 +22,7 @@ export default function ArtistsList() {
       setTimeout(() => setBlocked(false), 300);
       return;
     }
-    if (onUserAction) lastLoadRef.current = now;
+    lastLoadRef.current = now;
     setLoading(true);
     try {
       // fetch the full wrapper
@@ -54,7 +54,7 @@ export default function ArtistsList() {
 
   return (
     <>
-      {blocked && (
+      {blocked && !loading && (
         <Center
           style={{
             position: "fixed",
@@ -92,7 +92,7 @@ export default function ArtistsList() {
               <Button
                 color="#346d67"
                 disabled={page === 1}
-                onClick={() => loadPage(page - 1, true)}
+                onClick={() => loadPage(page - 1)}
               >
                 Prev
               </Button>
@@ -104,7 +104,7 @@ export default function ArtistsList() {
               <Button
                 color="#346d67"
                 disabled={page === totalPages}
-                onClick={() => loadPage(page + 1, true)}
+                onClick={() => loadPage(page + 1)}
               >
                 Next
               </Button>

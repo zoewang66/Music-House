@@ -23,15 +23,15 @@ export default function SongsList() {
   const lastLoadRef = useRef(0);
 
   // fetch one page at a time
-  const loadPage = async (p, onUserAction = false) => {
+  const loadPage = async (p) => {
     // rate-limit: ignore any calls <300ms after the previous
     const now = Date.now();
-    if (onUserAction && now - lastLoadRef.current < 300) {
+    if (now - lastLoadRef.current < 300) {
       setBlocked(true);
       setTimeout(() => setBlocked(false), 300);
       return;
     }
-    if (onUserAction) lastLoadRef.current = now;
+    lastLoadRef.current = now;
     setLoading(true);
     try {
       const res = await fetchSongs(p, limit);
@@ -57,7 +57,7 @@ export default function SongsList() {
 
   return (
     <>
-      {blocked && (
+      {blocked && !loading && (
         <Center
           style={{
             position: "fixed",
@@ -93,7 +93,7 @@ export default function SongsList() {
             <Button
               color="#346d67"
               disabled={page === 1}
-              onClick={() => loadPage(page - 1, true)}
+              onClick={() => loadPage(page - 1)}
             >
               Prev
             </Button>
@@ -103,7 +103,7 @@ export default function SongsList() {
             <Button
               color="#346d67"
               disabled={page === totalPages}
-              onClick={() => loadPage(page + 1, true)}
+              onClick={() => loadPage(page + 1)}
             >
               Next
             </Button>

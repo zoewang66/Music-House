@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SimpleGrid, Text, Button, Group, Loader, Center } from "@mantine/core";
+import { SimpleGrid, Text, Button, Group, Loader, Center, Loader } from "@mantine/core";
 import { fetchArtists, deleteArtist } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
@@ -14,15 +14,11 @@ export default function ArtistsList() {
   const limit = 9;
   const lastLoadRef = useRef(0);
 
-  const loadPage = async (p, onUserAction = false) => {
+  const loadPage = async (p) => {
     // rate-limit: ignore any calls <300ms after the previous
     const now = Date.now();
-    if (onUserAction && now - lastLoadRef.current < 300) {
-      setBlocked(true);
-      setTimeout(() => setBlocked(false), 300);
-      return;
-    }
-    if (onUserAction) lastLoadRef.current = now;
+    if (now - lastLoadRef.current < 300) return;
+    lastLoadRef.current = now;
     setLoading(true);
     try {
       // fetch the full wrapper
@@ -53,26 +49,16 @@ export default function ArtistsList() {
   };
 
   return (
-    <>
-      {blocked && (
-        <Center
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            zIndex: 10,
-          }}
-        >
-          <Loader size="xl" color="#346d67" />
-        </Center>
-      )}
-      <PageContainer center>
-        <Button component={Link} to="/artists/create" mb="md" color="#346d67">
-          Add New Artist
-        </Button>
+    <PageContainer center>
+      <Button component={Link} to="/artists/create" mb="md" color="#346d67">
+        Add New Artist
+      </Button>
 
+      {loading ? (
+        <Center mt="md">
+          <Loader />
+        </Center>
+      ) : (
         <>
           <SimpleGrid
             spacing="md"
@@ -92,7 +78,7 @@ export default function ArtistsList() {
               <Button
                 color="#346d67"
                 disabled={page === 1}
-                onClick={() => loadPage(page - 1, true)}
+                onClick={() => loadPage(page - 1)}
               >
                 Prev
               </Button>
@@ -104,14 +90,14 @@ export default function ArtistsList() {
               <Button
                 color="#346d67"
                 disabled={page === totalPages}
-                onClick={() => loadPage(page + 1, true)}
+                onClick={() => loadPage(page + 1)}
               >
                 Next
               </Button>
             </Group>
           </Center>
         </>
-      </PageContainer>
-    </>
+      )}
+    </PageContainer>
   );
 }

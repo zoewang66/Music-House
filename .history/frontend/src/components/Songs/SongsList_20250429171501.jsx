@@ -23,7 +23,7 @@ export default function SongsList() {
   const lastLoadRef = useRef(0);
 
   // fetch one page at a time
-  const loadPage = async (p, onUserAction = false) => {
+  const loadPage = async (p) => {
     // rate-limit: ignore any calls <300ms after the previous
     const now = Date.now();
     if (onUserAction && now - lastLoadRef.current < 300) {

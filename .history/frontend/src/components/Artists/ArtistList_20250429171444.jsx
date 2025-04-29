@@ -92,7 +92,7 @@ export default function ArtistsList() {
               <Button
                 color="#346d67"
                 disabled={page === 1}
-                onClick={() => loadPage(page - 1, true)}
+                onClick={() => loadPage(page - 1)}
               >
                 Prev
               </Button>
