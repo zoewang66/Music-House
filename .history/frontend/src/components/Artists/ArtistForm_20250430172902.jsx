@@ -253,8 +253,8 @@ export default function ArtistForm({ mode }) {
           />
 
           <Center mt="xl">
-            <Button type="submit" className="v-btn">
-              {mode === "create" ? "Create" : "Update"}
+            <Button type="submit" className="d-btn">
+              {mode === "create" ? "Create Artist" : "Update Artist"}
             </Button>
           </Center>
         </form>

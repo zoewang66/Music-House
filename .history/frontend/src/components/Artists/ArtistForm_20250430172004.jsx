@@ -126,108 +126,30 @@ export default function ArtistForm({ mode }) {
             description="At least 3 characters"
             withAsterisk
             {...form.getInputProps("name")}
-            styles={{
-              // The <input> element
-              input: {
-                color: "black",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-              // The <label> element
-              label: {
-                color: "white",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-              },
-              // The description text under the field
-              description: {
-                color: "#b24c66",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1rem",
-              },
-              // The error message
-              error: {
-                color: "yellow",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-            }}
           />
 
           <TextInput
+            className="input-text"
             label="Genre"
             placeholder="e.g. Pop, Rock, Jazz"
             description="Required"
             mt="md"
             withAsterisk
             {...form.getInputProps("genre")}
-            styles={{
-              // The <input> element
-              input: {
-                color: "black",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-              // The <label> element
-              label: {
-                color: "white",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-              },
-              // The description text under the field
-              description: {
-                color: "#b24c66",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1rem",
-              },
-              // The error message
-              error: {
-                color: "yellow",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-            }}
           />
 
           <TextInput
+            className="input-text"
             label="Bio"
             placeholder="Brief description (min. 10 chars)"
             description="Required"
             mt="md"
             withAsterisk
             {...form.getInputProps("bio")}
-            styles={{
-              // The <input> element
-              input: {
-                color: "black",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-              // The <label> element
-              label: {
-                color: "white",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-              },
-              // The description text under the field
-              description: {
-                color: "#b24c66",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1rem",
-              },
-              // The error message
-              error: {
-                color: "yellow",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-            }}
           />
 
           <MultiSelect
+            className="input-text"
             label="Songs"
             placeholder="Select songs…"
             // description="Optional"
@@ -235,26 +157,11 @@ export default function ArtistForm({ mode }) {
             mt="md"
             data={allSongs}
             {...form.getInputProps("songs")}
-            styles={{
-              // The <input> element
-              input: {
-                color: "black",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-              },
-              // The <label> element
-              label: {
-                color: "white",
-                fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-              },
-            }}
           />
 
           <Center mt="xl">
-            <Button type="submit" className="v-btn">
-              {mode === "create" ? "Create" : "Update"}
+            <Button type="submit" color="#346d67">
+              {mode === "create" ? "Create Artist" : "Update Artist"}
             </Button>
           </Center>
         </form>

@@ -1,0 +1,16 @@
+ #mantine-zv9bbah9h-label,
+ #{
+    color: white;
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 5rem;
+    font-style: normal;
+}
+
+#mantine-zv9bbah9h-description {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-style: normal;
+    color: #c96a7e
+}

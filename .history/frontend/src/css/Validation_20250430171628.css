@@ -1,0 +1,43 @@
+ #mantine-zv9bbah9h-label.input-text,
+ #mantine-9q20m0abe-label.input-text,
+ #mantine-tbrqqec4p-label.input-text,
+ #mantine-78olcgy2n-label.input-text {
+     color: white;
+     font-family: "Bellota", system-ui;
+     font-weight: 700;
+     font-size: 1.25rem;
+     font-style: normal;
+ }
+
+ #mantine-zv9bbah9h-description,
+ #mantine-9q20m0abe-description,
+ #mantine-tbrqqec4p-description {
+     font-family: "Bellota", system-ui;
+     font-weight: 700;
+     font-size: 1rem;
+     font-style: normal;
+     color: #b24c66;
+ }
+
+ .h2 {
+     font-family: 'Henny Penny', "cursive";
+     font-size: 30px;
+     color: black;
+ }
+
+ .artist-form-container {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     gap: 10px;
+     width: 600px;
+
+ }
+
+ #mantine-zv9bbah9h,
+ #mantine-9q20m0abe,
+ #mantine-tbrqqec4p,
+ #mantine-78olcgy2n {
+     width: 100%;
+ }

@@ -131,7 +131,6 @@ export default function ArtistForm({ mode }) {
               input: {
                 color: "black",
                 fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
               },
               // The <label> element
               label: {
@@ -167,7 +166,6 @@ export default function ArtistForm({ mode }) {
               input: {
                 color: "black",
                 fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
               },
               // The <label> element
               label: {
@@ -203,7 +201,6 @@ export default function ArtistForm({ mode }) {
               input: {
                 color: "black",
                 fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
               },
               // The <label> element
               label: {
@@ -240,7 +237,6 @@ export default function ArtistForm({ mode }) {
               input: {
                 color: "black",
                 fontFamily: "Bellota, sans-serif",
-                fontSize: "1.2rem",
               },
               // The <label> element
               label: {
@@ -253,8 +249,8 @@ export default function ArtistForm({ mode }) {
           />
 
           <Center mt="xl">
-            <Button type="submit" className="v-btn">
-              {mode === "create" ? "Create" : "Update"}
+            <Button type="submit" color="#346d67">
+              {mode === "create" ? "Create Artist" : "Update Artist"}
             </Button>
           </Center>
         </form>
