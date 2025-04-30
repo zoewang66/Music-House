@@ -6,20 +6,23 @@ import "../../css/Card.css";
 /**
  * A fixed-size, hoverable card for displaying a song.
  */
-export default function ArtistCard({
-  artist,
+export default function PlaylistCard({
+  pl,
   onDelete,
   width = 300,
   height = 380,
 }) {
+  const theme = useMantineTheme();
   return (
     <Card className="card">
       <div className="card-container">
         {/* Title (clamped to 2 lines) */}
         <div className="title-container">
-          <Text className="title">{artist.name}</Text>
+          <Text className="title">
+            {pl.name}
+          </Text>
           {/* Metadata */}
-          <Text className="duration">Genre: {artist.genre}</Text>
+          <Text className="duration">Description: {pl.description}</Text>
         </div>
 
         <div className="card-btn-container">
@@ -27,12 +30,13 @@ export default function ArtistCard({
           <Button
             className="v-btn"
             component={Link}
-            to={`/artists/${artist._id}`}
+            to={`/playlists/${pl._id}`}
           >
             View / Edit
           </Button>
           {/* Delete button fixed at top-right */}
-          <Button className="d-btn" onClick={() => onDelete(artist._id)}>Delete</Button>
+          <Button className="d-btn"
+          onClick={() => onDelete(pl._id)}>Delete</Button>
         </div>
       </div>
     </Card>

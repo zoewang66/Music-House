@@ -24,15 +24,11 @@ export default function ArtistCard({
 
         <div className="card-btn-container">
           {/* View/Edit at bottom */}
-          <Button
-            className="v-btn"
-            component={Link}
-            to={`/artists/${artist._id}`}
-          >
-            View / Edit
-          </Button>
+          <Button className="v-btn" 
+          component={Link}
++         to={`/artists/${artist._id}/edit`}>View / Edit</Button>
           {/* Delete button fixed at top-right */}
-          <Button className="d-btn" onClick={() => onDelete(artist._id)}>Delete</Button>
+          <Button className="d-btn">Delete</Button>
         </div>
       </div>
     </Card>

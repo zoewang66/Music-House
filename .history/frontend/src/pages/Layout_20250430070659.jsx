@@ -34,7 +34,7 @@ export default function Layout() {
         root: {
           color:
             active === item.link
-              ? theme.colors.teal[9] // active link color
+              ? theme.colors.teal[9]  // active link color
               : theme.colors.gray[9], // default link color
           fontWeight: active === item.link ? 500 : 400,
           textDecoration: "none",
@@ -61,6 +61,7 @@ export default function Layout() {
       {/* Header */}
       <AppShell.Header height={60} p="xs">
         <Container size="lg" style={{ height: "100%" }}>
+          {/* Full-height Flex for vertical centering, spaced for horizontal */}
           <Flex
             style={{ height: "100%" }}
             align="center"

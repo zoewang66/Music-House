@@ -30,6 +30,7 @@ export default function Layout() {
       key={item.link}
       component={Link}
       to={item.link}
+      onClick={() => setActive(item.link)}
       styles={(theme) => ({
         root: {
           color:
@@ -61,6 +62,7 @@ export default function Layout() {
       {/* Header */}
       <AppShell.Header height={60} p="xs">
         <Container size="lg" style={{ height: "100%" }}>
+          {/* Full-height Flex for vertical centering, spaced for horizontal */}
           <Flex
             style={{ height: "100%" }}
             align="center"

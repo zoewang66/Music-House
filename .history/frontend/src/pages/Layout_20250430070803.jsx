@@ -34,7 +34,7 @@ export default function Layout() {
         root: {
           color:
             active === item.link
-              ? theme.colors.teal[9] // active link color
+              ? theme.colors.teal[9]  // active link color
               : theme.colors.gray[9], // default link color
           fontWeight: active === item.link ? 500 : 400,
           textDecoration: "none",
@@ -67,7 +67,7 @@ export default function Layout() {
             justify="space-between"
           >
             {/* Logo / Title */}
-            <Text size="xl" weight={900} color={theme.colors.teal[9]}>
+            <Text size="xl" weight={900} color={theme.colors.teal[9]}> 
               Music House
             </Text>
 
@@ -80,24 +80,14 @@ export default function Layout() {
                   <Anchor
                     component={Link}
                     to="/login"
-                    styles={{
-                      root: {
-                        color: theme.colors.yellow[8],
-                        textDecoration: "none",
-                      },
-                    }}
+                    styles={{ root: { color: theme.colors.yellow[8], textDecoration: "none" } }}
                   >
                     Login
                   </Anchor>
                   <Anchor
                     component={Link}
                     to="/register"
-                    styles={{
-                      root: {
-                        color: theme.colors.yellow[8],
-                        textDecoration: "none",
-                      },
-                    }}
+                    styles={{ root: { color: theme.colors.yellow[8], textDecoration: "none" } }}
                   >
                     Register
                   </Anchor>
@@ -106,12 +96,7 @@ export default function Layout() {
                 <Anchor
                   component="button"
                   onClick={logout}
-                  styles={{
-                    root: {
-                      color: theme.colors.yellow[8],
-                      textDecoration: "none",
-                    },
-                  }}
+                  styles={{ root: { color: theme.colors.yellow[8], textDecoration: "none" } }}
                 >
                   Logout
                 </Anchor>

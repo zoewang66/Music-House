@@ -7,7 +7,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 // Define your main navigation links
@@ -19,17 +19,19 @@ const links = [
 ];
 
 export default function Layout() {
-  const location = useLocation();
-  const active = location.pathname;
-  const theme = useMantineTheme();
+  const [active, setActive] = useState(links[0].link);
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const isAuthenticated = !!user;
+  const theme = useMantineTheme();
+  const active = location.pathname;
   // Build menu items
   const items = links.map((item) => (
     <Anchor
       key={item.link}
       component={Link}
       to={item.link}
+      onClick={() => setActive(item.link)}
       styles={(theme) => ({
         root: {
           color:
@@ -61,6 +63,7 @@ export default function Layout() {
       {/* Header */}
       <AppShell.Header height={60} p="xs">
         <Container size="lg" style={{ height: "100%" }}>
+          {/* Full-height Flex for vertical centering, spaced for horizontal */}
           <Flex
             style={{ height: "100%" }}
             align="center"

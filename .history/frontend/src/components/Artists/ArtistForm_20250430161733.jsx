@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { TextInput, Button, Center, Alert, MultiSelect } from "@mantine/core";
@@ -141,21 +142,14 @@
 // src/components/ArtistForm.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  TextInput,
-  Button,
-  Center,
-  Alert,
-  MultiSelect,
-  Loader,
-} from "@mantine/core";
+import { TextInput, Button, Center, Alert, MultiSelect, Loader } from "@mantine/core";
 import {
   fetchArtistById,
   fetchSongs,
   createArtist,
   updateArtist,
 } from "../../api/index";
-import PageContainer from "../PageContainer";
+import PageContainer from "../components/PageContainer";
 
 export default function ArtistForm({ mode }) {
   const { id } = useParams();
@@ -186,7 +180,9 @@ export default function ArtistForm({ mode }) {
           page++;
         } while (page <= totalPages);
 
-        setAllSongs(allItems.map((s) => ({ value: s._id, label: s.title })));
+        setAllSongs(
+          allItems.map((s) => ({ value: s._id, label: s.title }))
+        );
       } catch (e) {
         console.error("🚨 loadAllSongs failed:", e);
       } finally {

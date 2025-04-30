@@ -32,7 +32,7 @@ export default function ArtistCard({
             View / Edit
           </Button>
           {/* Delete button fixed at top-right */}
-          <Button className="d-btn" onClick={() => onDelete(artist._id)}>Delete</Button>
+          <Button className="d-btn">Delete</Button>
         </div>
       </div>
     </Card>

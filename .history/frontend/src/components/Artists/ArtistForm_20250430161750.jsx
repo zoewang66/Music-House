@@ -155,7 +155,7 @@ import {
   createArtist,
   updateArtist,
 } from "../../api/index";
-import PageContainer from "../PageContainer";
+import PageContainer from "../coPageContainer";
 
 export default function ArtistForm({ mode }) {
   const { id } = useParams();

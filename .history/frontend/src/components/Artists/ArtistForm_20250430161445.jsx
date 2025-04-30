@@ -1,3 +1,4 @@
+// // src/components/ArtistForm.jsx
 // import React, { useState, useEffect } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { TextInput, Button, Center, Alert, MultiSelect } from "@mantine/core";
@@ -19,9 +20,7 @@
 //   const [allSongs, setAllSongs] = useState([]);
 //   const [selectedSongs, setSelectedSongs] = useState([]);
 //   const [error, setError] = useState(null);
-//   const [loadingSongs, setLoadingSongs] = useState(true);
 
-//   // Load songs first
 //   useEffect(() => {
 //     const loadAllSongs = async () => {
 //       try {
@@ -30,27 +29,33 @@
 //         let totalPages = 1;
 
 //         do {
+//           // fetchSongs(page, limitPerPage)
 //           const res = await fetchSongs(page, 9);
 //           const { items, totalPages: tp } = res.data;
 //           allItems = allItems.concat(items);
 //           totalPages = tp;
 //           page++;
+//           // pause 300ms between each request
+//           await new Promise((r) => setTimeout(r, 300));
 //         } while (page <= totalPages);
 
-//         setAllSongs(allItems.map((s) => ({ value: s._id, label: s.title })));
+//         setAllSongs(
+//           allItems.map((s) => ({
+//             value: s._id,
+//             label: s.title,
+//           }))
+//         );
 //       } catch (e) {
 //         console.error("🚨 loadAllSongs failed:", e);
-//       } finally {
-//         setLoadingSongs(false);
+//         setAllSongs([]);
 //       }
 //     };
 
 //     loadAllSongs();
 //   }, []);
 
-//   // Only fetch artist after songs data loaded
 //   useEffect(() => {
-//     if (mode !== "edit" || loadingSongs) return;
+//     if (mode !== "edit") return;
 
 //     fetchArtistById(id)
 //       .then((res) => {
@@ -64,7 +69,7 @@
 //         console.error("🚨 fetchArtistById failed:", e);
 //         setError(e.message);
 //       });
-//   }, [mode, id, loadingSongs]);
+//   }, [mode, id]);
 
 //   const onSubmit = async (e) => {
 //     e.preventDefault();
@@ -88,7 +93,7 @@
 //   return (
 //     <PageContainer center>
 //       {/* constrain form width to prevent flicker */}
-//       <div style={{ maxWidth: 600, width: "100%" }}>
+//       <div>
 //         <h2>{mode === "create" ? "New Artist" : "Edit Artist"}</h2>
 //         {error && <Alert color="red">{error}</Alert>}
 
@@ -117,7 +122,6 @@
 //           />
 
 //           <MultiSelect
-//             fullWidth
 //             data={allSongs}
 //             value={selectedSongs}
 //             onChange={setSelectedSongs}
@@ -141,21 +145,14 @@
 // src/components/ArtistForm.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  TextInput,
-  Button,
-  Center,
-  Alert,
-  MultiSelect,
-  Loader,
-} from "@mantine/core";
+import { TextInput, Button, Center, Alert, MultiSelect } from "@mantine/core";
 import {
   fetchArtistById,
   fetchSongs,
   createArtist,
   updateArtist,
 } from "../../api/index";
-import PageContainer from "../PageContainer";
+import PageContainer from "../";
 
 export default function ArtistForm({ mode }) {
   const { id } = useParams();
@@ -168,9 +165,8 @@ export default function ArtistForm({ mode }) {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [error, setError] = useState(null);
   const [loadingSongs, setLoadingSongs] = useState(true);
-  const [loadingArtist, setLoadingArtist] = useState(mode === "edit");
 
-  // Load song options first
+  // Load songs first
   useEffect(() => {
     const loadAllSongs = async () => {
       try {
@@ -197,11 +193,10 @@ export default function ArtistForm({ mode }) {
     loadAllSongs();
   }, []);
 
-  // Then fetch artist data
+  // Only fetch artist after songs data loaded
   useEffect(() => {
     if (mode !== "edit" || loadingSongs) return;
 
-    setLoadingArtist(true);
     fetchArtistById(id)
       .then((res) => {
         const a = res.data;
@@ -213,9 +208,6 @@ export default function ArtistForm({ mode }) {
       .catch((e) => {
         console.error("🚨 fetchArtistById failed:", e);
         setError(e.message);
-      })
-      .finally(() => {
-        setLoadingArtist(false);
       });
   }, [mode, id, loadingSongs]);
 
@@ -238,19 +230,9 @@ export default function ArtistForm({ mode }) {
     }
   };
 
-  // Show loader until all data ready
-  if (loadingSongs || loadingArtist) {
-    return (
-      <PageContainer center>
-        <Center style={{ minHeight: 200 }}>
-          <Loader size="lg" />
-        </Center>
-      </PageContainer>
-    );
-  }
-
   return (
     <PageContainer center>
+      {/* constrain form width to prevent flicker */}
       <div style={{ maxWidth: 600, width: "100%" }}>
         <h2>{mode === "create" ? "New Artist" : "Edit Artist"}</h2>
         {error && <Alert color="red">{error}</Alert>}
