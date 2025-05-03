@@ -1,12 +1,171 @@
-# React + Vite
+# Music House Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Purpose
 
-Currently, two official plugins are available:
+Music House Client is a React application that lets users log in, then browse, create, edit, and delete Artists, Songs, and Playlists through the Music House API. It provides a clean, responsive UI built with Mantine and handles authentication, protected routes, in-UI confirmations, and notifications.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Contributing
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+If you’d like to help improve the Music House Client:
+
+1. **Fork** the repository on GitHub.
+2. **Clone** your fork locally:
+   ```bash
+   git clone https://github.com/yourusername/music-house-client.git
+   cd music-house-client
+   ```
+3. **Create** a feature branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Install** dependencies and develop:
+   ```bash
+   npm install
+   npm run dev
+   ```
+5. **Commit** your changes with a clear message:
+   ```bash
+   git commit -m "feat: add dark-mode toggle"
+   ```
+6. **Push** to your fork and open a **Pull Request** against main.
+7. Address any review feedback; once approved, your changes will be merged.
+
+Please follow the existing code style, include tests for new functionality, and update this README if you add or change features.
+
+---
+
+## Dependencies & Installation
+
+### Prerequisites
+
+- **Node.js** v16 or higher
+- **npm** (comes with Node.js) or **yarn**
+
+### Project Dependencies
+
+The client application uses the following main packages:
+
+- `react` & `react-dom` — core React libraries
+- `react-router-dom` — client-side routing
+- `@mantine/core` & `@mantine/hooks` — UI component library & hooks
+- `@mantine/notifications` — toast notifications
+- `@tanstack/react-query` — data-fetching and caching
+- `axios` — HTTP client for talking to the API
+- `vite` — development server & build tool
+
+### Install & Run
+
+1. **Clone** the repo and `cd` into it:
+   ```bash
+   git clone https://github.com/yourusername/music-house.git
+   cd music-house
+   ```
+2. **Install** all dependencies in one command:
+   ```bash
+   # with npm
+   npm create vite@latest
+   # or with yarn
+   yarn create vite
+   ```
+3. **Start** the development server:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+--
+
+## Architecture
+
+frontend/
+├── public/  
+├── src/
+│ ├── vite.svg
+│ ├── api/
+│ │ └── index.js # wrapper for fetch/axios API calls
+│ │
+│ ├── components/
+│ │ ├── Artists/
+│ │ │ ├── ArtistCard.jsx
+│ │ │ ├── ArtistForm.jsx
+│ │ │ └── ArtistList.jsx
+│ │ ├── Playlists/
+│ │ │ ├── PlaylistCard.jsx
+│ │ │ └── PlaylistsList.jsx
+│ │ ├── Songs/
+│ │ │ ├── SongCard.jsx
+│ │ │ ├── SongForm.jsx
+│ │ │ └── SongsList.jsx
+│ │ ├── PrivateRoute.jsx # protects routes for logged-in users
+│ │ └── PageContainer.jsx # common page wrapper
+│ │
+│ ├── contexts/
+│ │ └── AuthContext.jsx # holds JWT, login/logout, attaches auth header
+│ │
+│ ├── css/
+│ │ ├── Card.css
+│ │ ├── Home.css
+│ │ └── Page.css
+│ │
+│ ├── images/ # any static images used in pages
+│ │ ├── picture1.png
+│ │ ├── picture2.png
+│ │ └── picture3.png
+│ │
+│ ├── pages/
+│ │ ├── Artists.jsx
+│ │ ├── Home.jsx
+│ │ ├── Layout.jsx # global header/nav + outlet
+│ │ ├── Login.jsx
+│ │ ├── NoPage.jsx # 404 fallback
+│ │ ├── Playlists.jsx
+│ │ ├── Register.jsx
+│ │ └── Songs.jsx
+│ │
+│ ├── App.jsx # React Router setup
+│ ├── main.jsx # app entrypoint, wraps <App> in AuthProvider
+│ └── index.css # global styles
+│
+├── .env # environment variables
+├── .gitignore
+├── package.json # scripts & dependencies
+├── vite.config.js # Vite configuration
+└── README.md
+
+--
+
+## How to Report Issues
+
+If you encounter a bug or have a feature request, please follow these steps:
+
+1. **Visit the repository’s issue tracker**  
+   Go to:  
+   `https://github.com/yourusername/music-house/issues`
+
+2. **Click “New issue”**
+
+3. **Fill out the issue template**
+
+   - **Title:** A concise summary of the problem or request
+   - **Description:** Detailed explanation of the issue or feature
+   - **Steps to reproduce (for bugs):**
+     1. Step one
+     2. Step two
+     3. ...
+   - **Expected vs. actual behavior:** What you expected to happen and what actually happened
+   - **Environment details (if relevant):**
+     - Browser and version (e.g., Chrome 114, Firefox 112)
+     - Operating system (e.g., Windows 10, macOS Monterey)
+     - Node.js and npm/yarn versions
+
+4. **Label the issue** (if you have permissions)
+
+   - `bug` for errors or unintended behavior
+   - `enhancement` for feature requests
+   - `question` for usage or clarification
+
+5. **Submit the issue** and wait for a response
+   - We aim to acknowledge all issues within 48 hours
+   - We may ask for additional information or logs to help diagnose the problem
