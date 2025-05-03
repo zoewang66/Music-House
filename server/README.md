@@ -68,7 +68,7 @@ Users must be authenticated (via JSON Web Tokens) to create, update or delete re
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) v16+
-- [Express] (https://expressjs.com/) v4+
+- [Express](https://expressjs.com/) v4+
 - [MongoDB](https://www.mongodb.com/) (local or Atlas)
 
 ### Install
