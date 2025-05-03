@@ -78,62 +78,59 @@ The client application uses the following main packages:
 --
 
 ## Architecture
-
 frontend/
-├── public/  
+├── public/                         # static assets
+│   └── vite.svg
 ├── src/
-│ ├── vite.svg
-│ ├── api/
-│ │ └── index.js # wrapper for fetch/axios API calls
-│ │
-│ ├── components/
-│ │ ├── Artists/
-│ │ │ ├── ArtistCard.jsx
-│ │ │ ├── ArtistForm.jsx
-│ │ │ └── ArtistList.jsx
-│ │ ├── Playlists/
-│ │ │ ├── PlaylistCard.jsx
-│ │ │ └── PlaylistsList.jsx
-│ │ ├── Songs/
-│ │ │ ├── SongCard.jsx
-│ │ │ ├── SongForm.jsx
-│ │ │ └── SongsList.jsx
-│ │ ├── PrivateRoute.jsx # protects routes for logged-in users
-│ │ └── PageContainer.jsx # common page wrapper
-│ │
-│ ├── contexts/
-│ │ └── AuthContext.jsx # holds JWT, login/logout, attaches auth header
-│ │
-│ ├── css/
-│ │ ├── Card.css
-│ │ ├── Home.css
-│ │ └── Page.css
-│ │
-│ ├── images/ # any static images used in pages
-│ │ ├── picture1.png
-│ │ ├── picture2.png
-│ │ └── picture3.png
-│ │
-│ ├── pages/
-│ │ ├── Artists.jsx
-│ │ ├── Home.jsx
-│ │ ├── Layout.jsx # global header/nav + outlet
-│ │ ├── Login.jsx
-│ │ ├── NoPage.jsx # 404 fallback
-│ │ ├── Playlists.jsx
-│ │ ├── Register.jsx
-│ │ └── Songs.jsx
-│ │
-│ ├── App.jsx # React Router setup
-│ ├── main.jsx # app entrypoint, wraps <App> in AuthProvider
-│ └── index.css # global styles
+│   ├── api/                        # wrapper for fetch/axios API calls
+│   │   └── index.js
+│   │
+│   ├── components/                 # reusable UI components
+│   │   ├── Artists/
+│   │   │   ├── ArtistCard.jsx
+│   │   │   ├── ArtistForm.jsx
+│   │   │   └── ArtistList.jsx
+│   │   ├── Playlists/
+│   │   │   ├── PlaylistCard.jsx
+│   │   │   └── PlaylistsList.jsx
+│   │   ├── Songs/
+│   │   │   ├── SongCard.jsx
+│   │   │   ├── SongForm.jsx
+│   │   │   └── SongsList.jsx
+│   │   ├── PrivateRoute.jsx       # protects routes for authenticated users
+│   │   └── PageContainer.jsx      # common page layout wrapper
+│   │
+│   ├── contexts/                  # React Contexts
+│   │   └── AuthContext.jsx        # manages JWT, login/logout, attaches auth header
+│   │
+│   ├── css/                       # custom styles
+│   │   ├── Card.css
+│   │   ├── Home.css
+│   │   └── Page.css
+│   │
+│   ├── images/                    # static images used in pages
+│   │   ├── picture1.png
+│   │   ├── picture2.png
+│   │   └── picture3.png
+│   │
+│   ├── pages/                     # route-level page components
+│   │   ├── Artists.jsx
+│   │   ├── Home.jsx
+│   │   ├── Layout.jsx             # global header/navigation + outlet
+│   │   ├── Login.jsx
+│   │   ├── NoPage.jsx             # 404 fallback
+│   │   ├── Playlists.jsx
+│   │   ├── Register.jsx
+│   │   └── Songs.jsx
+│   │
+│   ├── App.jsx                    # React Router setup
+│   ├── main.jsx                   # application entrypoint, wraps App in AuthProvider
+│   └── index.css                  # global CSS
 │
-├── .env # environment variables
+├── .env                            # environment variables (VITE_API_URL)
 ├── .gitignore
-├── package.json # scripts & dependencies
-├── vite.config.js # Vite configuration
-└── README.md
-
+├── package.json                    # scripts & dependencies
+└── vite.config.js                  # Vite configuration
 --
 
 ## How to Report Issues
