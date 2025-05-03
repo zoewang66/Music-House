@@ -17,6 +17,7 @@
     background-color: #346d67;
 }
 
+
 .add-btn:hover,
 #add-btn:hover {
     background-color: #D5CFE1;
@@ -24,7 +25,7 @@
 }
 
 #add-btn {
-    margin-top: 2rem;
+    margin-top: 5rem;
     padding-inline: 20px;
 }
 

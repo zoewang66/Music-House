@@ -1,101 +1,3 @@
-// import { useState } from "react";
-// import { TextInput, PasswordInput, Button, Alert } from "@mantine/core";
-// import { useForm } from "@mantine/form";
-// import { useNavigate } from "react-router-dom";
-// import PageContainer from "../components/PageContainer";
-
-// const API_BASE_URL = import.meta.env.VITE_API_URL;
-
-// const Register = () => {
-//   const [error, setError] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   // Initialize the form using Mantine's useForm hook
-//   const form = useForm({
-//     initialValues: {
-//       username: "",
-//       password: "",
-//     },
-//     validate: {
-//       username: (value) => (value.length === 0 ? "Username is required" : null),
-//       password: (value) =>
-//         value.length < 3 ? "Password must be at least 6 characters" : null,
-//     },
-//   });
-
-//   const handleRegister = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError(null);
-
-//     // Validate the form before sending the request
-//     const { username, password } = form.values;
-
-//     if (form.validate()) {
-//       // ← Build the URL once
-//       const url = `${API_BASE_URL}/auth/register`;
-//       // ← Log it before you call fetch
-//       console.log("📡 Register POST to:", url);
-//       try {
-//         const response = await fetch(url, {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify({ username, password }),
-//         });
-
-//         if (!response.ok) {
-//           const data = await response.json();
-//           throw new Error(data.error || "Registration failed");
-//         }
-
-//         // Redirect to the login page after successful registration
-//         navigate("/login");
-//       } catch (err) {
-//         setError(err.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     } else {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <PageContainer center={true}>
-//       <div style={{ maxWidth: 400, margin: "auto" }}>
-//         <h2>Register</h2>
-//         {error && <Alert color="red">{error}</Alert>}
-//         <form onSubmit={handleRegister}>
-//           <TextInput
-//             label="Username"
-//             {...form.getInputProps("username")}
-//             required
-//             error={form.errors.username}
-//           />
-//           <PasswordInput
-//             label="Password"
-//             {...form.getInputProps("password")}
-//             required
-//             error={form.errors.password}
-//           />
-//           <Button
-//             type="submit"
-//             fullWidth
-//             mt="sm"
-//             loading={loading}
-//             disabled={loading}
-//           >
-//             Register
-//           </Button>
-//         </form>
-//       </div>
-//     </PageContainer>
-//   );
-// };
-
-// export default Register;
-
 import React, { useState } from "react";
 import {
   Card,
@@ -126,9 +28,23 @@ export default function Register() {
       password: "",
     },
     validate: {
-      username: (value) => (value ? null : "Username is required"),
-      password: (value) =>
-        value.length >= 6 ? null : "Password must be at least 6 characters",
+      username: (value) => {
+        if (value.length < 5 || value.length > 20) {
+          return "Username must be 5–20 characters";
+        }
+        if (!/^[A-Za-z0-9_]+$/.test(value)) {
+          return "Only letters, numbers, and underscores allowed";
+        }
+        return null;
+      },
+      password: (value) => {
+        // ≥8 chars, uppercase, lowercase, digit, special char
+        const PASSWORD_REGEX =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+        return PASSWORD_REGEX.test(value)
+          ? null
+          : "Password must be ≥8 chars with upper, lower, number & special char";
+      },
     },
   });
 
@@ -137,7 +53,8 @@ export default function Register() {
     setError(null);
     setLoading(true);
 
-    if (!form.validate()) {
+    const validation = form.validate();
+    if (validation.hasErrors) {
       setLoading(false);
       return;
     }
@@ -157,6 +74,7 @@ export default function Register() {
         throw new Error(data.error || "Registration failed");
       }
 
+      alert("Registration succeeded! Please log in.");
       navigate("/login");
     } catch (err) {
       setError(err.message);

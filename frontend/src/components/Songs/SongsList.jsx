@@ -4,7 +4,7 @@ import { fetchSongs, deleteSong } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
 import SongCard from "./SongCard";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import "../../css/Page.css";
 
 export default function SongsList() {
@@ -14,6 +14,7 @@ export default function SongsList() {
   const lastClick = useRef(0);
 
   // fetch & cache pages; never flashes empty thanks to keepPreviousData
+  const queryClient = useQueryClient();
   const { data, isFetching } = useQuery({
     queryKey: ["songs", page],
     queryFn: () => fetchSongs(page, limit).then((res) => res.data),
@@ -39,8 +40,8 @@ export default function SongsList() {
   const onDelete = async (id) => {
     if (!confirm("Delete this song?")) return;
     await deleteSong(id);
-    // invalidate or refetch current page
-    // optional: useQueryClient().invalidateQueries(["songs", page]);
+    // tell React-Query to refetch the current page:
+    queryClient.invalidateQueries({ queryKey: ["songs", page] });
   };
 
   return (
@@ -65,9 +66,7 @@ export default function SongsList() {
           Add New Song
         </Button>
 
-        <SimpleGrid
-          className="card-list"
-        >
+        <SimpleGrid className="card-list">
           {items.map((s) => (
             <SongCard key={s._id} song={s} onDelete={onDelete} />
           ))}

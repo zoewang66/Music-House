@@ -4,7 +4,7 @@ import { fetchArtists, deleteArtist } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
 import ArtistCard from "./ArtistCard";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import "../../css/Page.css";
 
 export default function ArtistsList() {
@@ -13,6 +13,7 @@ export default function ArtistsList() {
   const limit = 9;
   const lastClick = useRef(0);
 
+  const queryClient = useQueryClient();
   const { data, isFetching } = useQuery({
     queryKey: ["artists", page],
     queryFn: () => fetchArtists(page, "", limit),
@@ -39,10 +40,9 @@ export default function ArtistsList() {
   const onDelete = async (id) => {
     if (!confirm("Delete this artist?")) return;
     await deleteArtist(id);
-    // optionally: invalidate or refetch
-    // queryClient.invalidateQueries(["artists", page]);
+    // tell React-Query to refetch the current page
+    queryClient.invalidateQueries({ queryKey: ["artists", page] });
   };
-
   return (
     <>
       {blocked && (

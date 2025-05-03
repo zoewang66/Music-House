@@ -6,12 +6,7 @@ import "../../css/Card.css";
 /**
  * A fixed-size, hoverable card for displaying a song.
  */
-export default function SongCard({
-  song,
-  onDelete,
-  width = 300,
-  height = 380,
-}) {
+export default function SongCard({ song, onDelete }) {
   return (
     <Card className="card">
       <div className="card-container">

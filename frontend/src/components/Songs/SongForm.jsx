@@ -24,13 +24,16 @@ import "../../css/Card.css";
 export default function SongForm({ mode }) {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [title, setTitle] = useState("");
-  const [duration, setDuration] = useState(0);
-  const [releaseDate, setReleaseDate] = useState(null);
   const [artistOptions, setArtistOptions] = useState([]);
-  const [selectedArtist, setSelectedArtist] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // const [title, setTitle] = useState("");
+  // const [duration, setDuration] = useState(0);
+  // const [releaseDate, setReleaseDate] = useState(null);
+  // const [artistOptions, setArtistOptions] = useState([]);
+  // const [selectedArtist, setSelectedArtist] = useState(null);
+  // const [error, setError] = useState(null);
 
   const form = useForm({
     initialValues: {
@@ -89,11 +92,17 @@ export default function SongForm({ mode }) {
     }
   }, [mode, id]);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (value) => {
+    setError(null);
     try {
-      // build payload with single "artist" field
-      const payload = { title, duration, releaseDate, artist: selectedArtist };
+      // // build payload with single "artist" field
+      // const payload = { title, duration, releaseDate, artist: selectedArtist };
+      let payload = {
+        title: values.title.trim(),
+        duration: values.duration,
+        releaseDate: values.releaseDate,
+        artist: values.artist,
+      };
 
       if (!/^[0-9a-fA-F]{24}$/.test(selectedArtist)) {
         // Highlight: if user typed a new artist name, create it first
@@ -124,12 +133,13 @@ export default function SongForm({ mode }) {
         {mode === "create" ? "New Song" : "Edit Song"}
       </h2>
       {error && <Alert color="red">{error}</Alert>}
-      <form onSubmit={onSubmit}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="Title"
-          value={title}
+          // value={title}
+          placeholder="Enter song title"
           description="At least 2 characters"
-          onChange={(e) => setTitle(e.currentTarget.value)}
+          {...form.getInputProps("title")}
           required
           styles={{
             // The <input> element
@@ -162,11 +172,12 @@ export default function SongForm({ mode }) {
 
         <NumberInput
           label="Duration (sec)"
-          value={duration}
+          // value={duration}
           description="Must at least 1 second"
-          onChange={setDuration}
+          placeholder="e.g.230"
           required
           mt="md"
+          {...form.getInputProps("duration")}
           styles={{
             // The <input> element
             input: {
@@ -198,10 +209,11 @@ export default function SongForm({ mode }) {
 
         <InputWrapper
           label="Release Date"
+          placeholder="Pick a date"
           description="Must pick a date"
           withAsterisk
           mt="md"
-          error={form.errors.releaseDate}
+          {...form.getInputProps("releaseDate")}
           styles={{
             // The <label> element
             label: {
@@ -227,8 +239,8 @@ export default function SongForm({ mode }) {
           <DatePicker
             placeholder="Pick a date"
             withAsterisk
-            value={releaseDate}
-            onChange={setReleaseDate}
+            // value={releaseDate}
+            // onChange={setReleaseDate}
             mt="md"
             style={{
               width: "100%",
@@ -238,22 +250,6 @@ export default function SongForm({ mode }) {
               fontFamily: "Bellota, sans-serif",
               fontSize: "1.2rem",
             }}
-            calendarProps={{
-              styles: {
-                // target each day cell inside the calendar
-                day: {
-                  // the picked day
-                  "&[data-selected]": {
-                    backgroundColor: "white",
-                    color: "#346d67",
-                  },
-                  // the selection ring
-                  "&[data-selected]::before": {
-                    borderColor: "#346d67",
-                  },
-                },
-              },
-            }}
           />
         </InputWrapper>
 
@@ -261,12 +257,17 @@ export default function SongForm({ mode }) {
           label="Artist"
           placeholder="Select or type to add new"
           searchable
-          value={selectedArtist}
-          onChange={setSelectedArtist}
           data={artistOptions}
           description="Must pick/create an artist"
           mt="md"
           required
+          getCreateLabel={(q) => `+ Create ${q}`}
+          onCreate={(q) => {
+            const item = { value: q, label: q };
+            setArtistOptions((a) => [...a, item]);
+            return q;
+          }}
+          {...form.getInputProps("artist")}
           styles={{
             // The <input> element
             input: {

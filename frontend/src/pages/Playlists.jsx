@@ -8,6 +8,7 @@ import {
   MultiSelect,
   Button,
   Center,
+  Alert,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
@@ -22,12 +23,8 @@ import "../css/Card.css";
 export default function Playlist({ mode }) {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [allSongs, setAllSongs] = useState([]);
-  const [selected, setSelected] = useState([]);
-
+  const [songOptions, setSongOptions] = useState([]);
+  const [submitError, setSubmitError] = useState(null);
   const form = useForm({
     initialValues: {
       name: "",
@@ -39,6 +36,8 @@ export default function Playlist({ mode }) {
         value.length < 3 ? "Name must be at least 3 characters" : null,
       description: (value) =>
         value.length < 10 ? "Description must be at least 10 characters" : null,
+      songs: (value) =>
+        value.length === 0 ? "Please select at least one song" : null,
     },
   });
 
@@ -52,8 +51,7 @@ export default function Playlist({ mode }) {
 
         // keep fetching until we've pulled every page
         do {
-          const res = await fetchSongs(page, 9); // page & limit
-          console.log(`🎯 fetchSongs page ${page}:`, res.data.items);
+          const res = await fetchSongs(page, 9);
 
           allItems = allItems.concat(res.data.items);
           totalPages = res.data.totalPages;
@@ -65,9 +63,8 @@ export default function Playlist({ mode }) {
           value: s._id,
           label: s.title,
         }));
-        console.log("✅ all song options:", options);
 
-        setAllSongs(options);
+        setSongOptions(options);
       } catch (err) {
         console.error("loadAllSongs failed:", err);
         if (err.response?.status === 401) {
@@ -77,15 +74,16 @@ export default function Playlist({ mode }) {
     };
 
     loadAllSongs();
-
-    // if editing, also load the existing playlist
     if (mode === "edit") {
       fetchPlaylistById(id)
         .then((res) => {
-          const pl = res.data;
-          setName(pl.name);
-          setDescription(pl.description);
-          setSelected(pl.songs.map((s) => s._id));
+          const { name, description, songs } = res.data;
+          form.setValues({
+            name,
+            description,
+            // MultiSelect wants an array of IDs:
+            songs: songs.map((s) => s._id),
+          });
         })
         .catch((err) => {
           console.error("fetchPlaylistById failed:", err);
@@ -96,19 +94,24 @@ export default function Playlist({ mode }) {
     }
   }, [mode, id, navigate]);
 
-  const handleSubmit = () => {
-    const data = { name, description, songs: selected };
-
-    const action =
-      mode === "create" ? createPlaylist(data) : updatePlaylist(id, data);
-    action
-      .then(() => navigate("/playlists"))
-      .catch((err) => {
-        console.error("save playlist failed:", err);
-        if (err.response?.status === 401) {
-          navigate("/login", { replace: true });
-        }
-      });
+  const handleFormSubmit = async (values) => {
+    setSubmitError(null);
+    try {
+      const payload = {
+        name: values.name.trim(),
+        description: values.description.trim(),
+        songs: values.songs,
+      };
+      const action =
+        mode === "create"
+          ? createPlaylist(payload)
+          : updatePlaylist(id, payload);
+      await action;
+      navigate("/playlists");
+    } catch (err) {
+      console.error("save playlist failed:", err.response?.data || err);
+      setSubmitError(err.response?.data?.error || "Save failed");
+    }
   };
 
   return (
@@ -122,109 +125,128 @@ export default function Playlist({ mode }) {
           textAlign: "center",
         }}
       >
-        New Playlist
+        {/* New Playlist */}
+        {mode === "create" ? "New Playlist" : "Edit Playlist"}
       </h2>
-      <Stack spacing="md">
-        <TextInput
-          fullWidth
-          label="Name"
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
-          required
-          description="At least 3 characters"
-          styles={{
-            // The <input> element
-            input: {
-              color: "black",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
-            // The <label> element
-            label: {
-              color: "white",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-            },
-            // The description text under the field
-            description: {
-              color: "#b24c66",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1rem",
-            },
-            // The error message
-            error: {
-              color: "yellow",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
-          }}
-        />
-        <Textarea
-          fullWidth
-          label="Description"
-          value={description}
-          description="at least 10 characters"
-          onChange={(e) => setDescription(e.currentTarget.value)}
-          styles={{
-            // The <input> element
-            input: {
-              color: "black",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
-            // The <label> element
-            label: {
-              color: "white",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-            },
-            // The description text under the field
-            description: {
-              color: "#b24c66",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1rem",
-            },
-            // The error message
-            error: {
-              color: "yellow",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
-          }}
-        />
-        <MultiSelect
-          withinPortal
-          zIndex={999}
-          fullWidth
-          data={allSongs}
-          label="Songs"
-          placeholder="Select songs"
-          value={selected}
-          onChange={setSelected}
-          styles={{
-            // The <input> element
-            input: {
-              color: "black",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
-            // The <label> element
-            label: {
-              color: "white",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-            },
-          }}
-        />
-        <Center mt="xl">
-          <Button className="v-btn" onClick={handleSubmit}>
-            {mode === "create" ? "Create" : "Update"}
-          </Button>
-        </Center>
-      </Stack>
+      {submitError && <Alert color="red">{submitError}</Alert>}
+
+      <form onSubmit={form.onSubmit(handleFormSubmit)}>
+        <Stack spacing="md">
+          <TextInput
+            fullWidth
+            label="Name"
+            placeholder="Playlist name"
+            required
+            description="At least 3 characters"
+            {...form.getInputProps("name")}
+            styles={{
+              // The <input> element
+              input: {
+                color: "black",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+              // The <label> element
+              label: {
+                color: "white",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+              },
+              // The description text under the field
+              description: {
+                color: "#b24c66",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1rem",
+              },
+              // The error message
+              error: {
+                color: "yellow",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+            }}
+          />
+          <Textarea
+            fullWidth
+            label="Description"
+            placeholder="Playlist description"
+            description="at least 10 characters"
+            withAsterisk
+            {...form.getInputProps("description")}
+            styles={{
+              // The <input> element
+              input: {
+                color: "black",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+              // The <label> element
+              label: {
+                color: "white",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+              },
+              // The description text under the field
+              description: {
+                color: "#b24c66",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1rem",
+              },
+              // The error message
+              error: {
+                color: "yellow",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+            }}
+          />
+          <MultiSelect
+            fullWidth
+            placeholder="Select songs"
+            data={songOptions}
+            searchable
+            label="Songs"
+            mt={"md"}
+            withAsterisk
+            description="Pick one or more songs"
+            {...form.getInputProps("songs")}
+            styles={{
+              // The <input> element
+              input: {
+                color: "black",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+              // The <label> element
+              label: {
+                color: "white",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+              },
+              // The description text under the field
+              description: {
+                color: "#b24c66",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1rem",
+              },
+              // The error message
+              error: {
+                color: "yellow",
+                fontFamily: "Bellota, sans-serif",
+                fontSize: "1.2rem",
+              },
+            }}
+          />
+          <Center mt="xl">
+            <Button type="submit" className="v-btn">
+              {mode === "create" ? "Create" : "Update"}
+            </Button>
+          </Center>
+        </Stack>
+      </form>
     </PageContainer>
   );
 }

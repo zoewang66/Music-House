@@ -9,6 +9,8 @@ import {
 } from "@mantine/core";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMusic } from "@fortawesome/free-solid-svg-icons";
 
 // Define your main navigation links
 const links = [
@@ -68,7 +70,10 @@ export default function Layout() {
           >
             {/* Logo / Title */}
             <Text size="xl" weight={900} color={theme.colors.teal[9]}>
-              Music House
+              <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+                <FontAwesomeIcon icon={faMusic} beat />
+                <p>Music House</p>
+              </div>
             </Text>
 
             {/* Nav items + auth links */}

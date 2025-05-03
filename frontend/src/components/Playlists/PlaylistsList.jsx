@@ -6,7 +6,7 @@ import PageContainer from "../PageContainer";
 import PlaylistCard from "./PlaylistCard";
 import "../../css/Page.css";
 
-export default function PlaylistsList() {
+export default function PlaylistsList({ mode }) {
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
@@ -19,20 +19,28 @@ export default function PlaylistsList() {
         console.error("Error fetching playlists:", err);
       });
   }, []);
-
   const handleDelete = async (id) => {
+    // 1. Ask for confirmation
     if (!window.confirm("Are you sure you want to delete this playlist?")) {
       return;
     }
+
     try {
+      // 2. Perform the delete
       await deletePlaylist(id);
-      // remove it from local state so the UI updates
+
+      // 3. Update local state so the UI refreshes
       setPlaylists((pls) => pls.filter((pl) => pl._id !== id));
+
+      // 4. Tell the user it worked
+      window.alert("Playlist deleted successfully");
     } catch (err) {
       console.error("Failed to delete playlist:", err);
-      alert(
+
+      // 5. Show an error if it fails
+      window.alert(
         err.response?.data?.error ||
-          "Could not delete playlist. Try again later."
+          "Could not delete playlist. Please try again later."
       );
     }
   };
@@ -52,7 +60,11 @@ export default function PlaylistsList() {
       ) : (
         <SimpleGrid className="card-list">
           {playlists.map((pl) => (
-            <PlaylistCard key={pl._id} pl={pl} onDelete={handleDelete} />
+            <PlaylistCard
+              key={pl._id}
+              pl={pl}
+              onDelete={() => handleDelete(pl._id)}
+            />
           ))}
         </SimpleGrid>
       )}

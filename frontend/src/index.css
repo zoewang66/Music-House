@@ -13,7 +13,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
+/* .mantine-Modal-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* center via flex */
+/* align-items: center;
+  justify-content: center; */
+/* } */
+*/ html,
 body {
   overflow-x: hidden;
 }
@@ -55,4 +66,3 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-
