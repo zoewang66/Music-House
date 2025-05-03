@@ -74,64 +74,57 @@ The client application uses the following main packages:
    npm install
    npm run dev
    ```
-
---
+   --
 
 ## Architecture
-frontend/
-├── public/                         # static assets
-│   └── vite.svg
-├── src/
-│   ├── api/                        # wrapper for fetch/axios API calls
-│   │   └── index.js
-│   │
-│   ├── components/                 # reusable UI components
-│   │   ├── Artists/
-│   │   │   ├── ArtistCard.jsx
-│   │   │   ├── ArtistForm.jsx
-│   │   │   └── ArtistList.jsx
-│   │   ├── Playlists/
-│   │   │   ├── PlaylistCard.jsx
-│   │   │   └── PlaylistsList.jsx
-│   │   ├── Songs/
-│   │   │   ├── SongCard.jsx
-│   │   │   ├── SongForm.jsx
-│   │   │   └── SongsList.jsx
-│   │   ├── PrivateRoute.jsx       # protects routes for authenticated users
-│   │   └── PageContainer.jsx      # common page layout wrapper
-│   │
-│   ├── contexts/                  # React Contexts
-│   │   └── AuthContext.jsx        # manages JWT, login/logout, attaches auth header
-│   │
-│   ├── css/                       # custom styles
-│   │   ├── Card.css
-│   │   ├── Home.css
-│   │   └── Page.css
-│   │
-│   ├── images/                    # static images used in pages
-│   │   ├── picture1.png
-│   │   ├── picture2.png
-│   │   └── picture3.png
-│   │
-│   ├── pages/                     # route-level page components
-│   │   ├── Artists.jsx
-│   │   ├── Home.jsx
-│   │   ├── Layout.jsx             # global header/navigation + outlet
-│   │   ├── Login.jsx
-│   │   ├── NoPage.jsx             # 404 fallback
-│   │   ├── Playlists.jsx
-│   │   ├── Register.jsx
-│   │   └── Songs.jsx
-│   │
-│   ├── App.jsx                    # React Router setup
-│   ├── main.jsx                   # application entrypoint, wraps App in AuthProvider
-│   └── index.css                  # global CSS
-│
-├── .env                            # environment variables (VITE_API_URL)
-├── .gitignore
-├── package.json                    # scripts & dependencies
-└── vite.config.js                  # Vite configuration
---
+
+- **frontend/**
+  - **public/**
+    - `vite.svg`
+    - `index.js`
+  - **src/**
+    - **api/**
+      - _wrapper for fetch/axios API calls_
+    - **components/** – reusable UI pieces
+      - **Artists/**
+        - `ArtistCard.jsx`
+        - `ArtistForm.jsx`
+        - `ArtistList.jsx`
+      - **Playlists/**
+        - `PlaylistCard.jsx`
+        - `PlaylistsList.jsx`
+      - **Songs/**
+        - `SongCard.jsx`
+        - `SongForm.jsx`
+        - `SongsList.jsx`
+      - `PrivateRoute.jsx` – protects routes for authenticated users
+      - `PageContainer.jsx` – common page layout wrapper
+    - **contexts/**– React Contexts
+      - `AuthContext.jsx` – manages JWT, login/logout, attaches auth header
+    - **css/** – custom styles
+      - `Card.css`
+      - `Home.css`
+      - `Page.css`
+    - **images/** – static images used in pages
+      - `picture1.png`
+      - `picture2.png`
+      - `picture3.png`
+    - **pages/** – route-level page components
+      - `Artists.jsx`
+      - `Home.jsx`
+      - `Layout.jsx` – global header/navigation + `<Outlet />`
+      - `Login.jsx`
+      - `NoPage.jsx` – 404 fallback
+      - `Playlists.jsx`
+      - `Register.jsx`
+      - `Songs.jsx`
+    - `App.jsx` – React Router setup
+  - `main.jsx` – application entrypoint, wraps `<App />` in `AuthProvider`
+  - `index.css` – global CSS
+  - `.env` – environment variables (e.g. `VITE_API_URL`)
+  - `.gitignore`
+  - `package.json` – scripts & dependencies
+  - `vite.config.js` – Vite configuration
 
 ## How to Report Issues
 
