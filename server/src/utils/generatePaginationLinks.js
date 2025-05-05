@@ -1,6 +1,5 @@
 const { URL } = require("url");
 
-// Helper function to generate pagination links
 const generatePaginationLinks = (
   originalUrl,
   currentPage,

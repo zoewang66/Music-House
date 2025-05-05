@@ -42,57 +42,41 @@ export default function Playlist({ mode }) {
   });
 
   useEffect(() => {
-    // Load every page of songs, concatenate into one array
-    const loadAllSongs = async () => {
+    async function init() {
       try {
         let page = 1;
         let allItems = [];
         let totalPages = 1;
 
-        // keep fetching until we've pulled every page
         do {
           const res = await fetchSongs(page, 9);
-
           allItems = allItems.concat(res.data.items);
           totalPages = res.data.totalPages;
           page++;
         } while (page <= totalPages);
 
-        // map into { value, label }
-        const options = allItems.map((s) => ({
-          value: s._id,
-          label: s.title,
-        }));
-
+        const options = allItems.map((s) => ({ value: s._id, label: s.title }));
         setSongOptions(options);
-      } catch (err) {
-        console.error("loadAllSongs failed:", err);
-        if (err.response?.status === 401) {
-          navigate("/login", { replace: true });
-        }
-      }
-    };
 
-    loadAllSongs();
-    if (mode === "edit") {
-      fetchPlaylistById(id)
-        .then((res) => {
+       
+        if (mode === "edit") {
+          const res = await fetchPlaylistById(id);
           const { name, description, songs } = res.data;
           form.setValues({
             name,
             description,
-            // MultiSelect wants an array of IDs:
             songs: songs.map((s) => s._id),
           });
-        })
-        .catch((err) => {
-          console.error("fetchPlaylistById failed:", err);
-          if (err.response?.status === 401) {
-            navigate("/login", { replace: true });
-          }
-        });
+        }
+      } catch (err) {
+        console.error("PlaylistForm init failed:", err);
+        if (err.response?.status === 401) {
+          navigate("/login", { replace: true });
+        }
+      }
     }
-  }, [mode, id, navigate]);
+    init();
+  }, [mode, id]);
 
   const handleFormSubmit = async (values) => {
     setSubmitError(null);
@@ -125,7 +109,6 @@ export default function Playlist({ mode }) {
           textAlign: "center",
         }}
       >
-        {/* New Playlist */}
         {mode === "create" ? "New Playlist" : "Edit Playlist"}
       </h2>
       {submitError && <Alert color="red">{submitError}</Alert>}

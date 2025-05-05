@@ -12,7 +12,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 
-// Define your main navigation links
 const links = [
   { link: "/", label: "Home" },
   { link: "/songs", label: "Songs" },
@@ -36,8 +35,8 @@ export default function Layout() {
         root: {
           color:
             active === item.link
-              ? theme.colors.teal[9] // active link color
-              : theme.colors.gray[9], // default link color
+              ? theme.colors.teal[9] 
+              : theme.colors.gray[9], 
           fontWeight: active === item.link ? 500 : 400,
           textDecoration: "none",
           padding: "0.25rem 0.5rem",
@@ -54,13 +53,11 @@ export default function Layout() {
       padding="md"
       navbarOffsetBreakpoint="sm"
       styles={{
-        // target the header slot
         header: {
           backgroundColor: "#D5CFE1",
         },
       }}
     >
-      {/* Header */}
       <AppShell.Header height={60} p="xs">
         <Container size="lg" style={{ height: "100%" }}>
           <Flex
@@ -68,7 +65,6 @@ export default function Layout() {
             align="center"
             justify="space-between"
           >
-            {/* Logo / Title */}
             <Text size="xl" weight={900} color={theme.colors.teal[9]}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
                 <FontAwesomeIcon icon={faMusic} beat />
@@ -76,7 +72,6 @@ export default function Layout() {
               </div>
             </Text>
 
-            {/* Nav items + auth links */}
             <Flex align="center" gap="md">
               {items}
 
@@ -126,7 +121,6 @@ export default function Layout() {
         </Container>
       </AppShell.Header>
 
-      {/* Main Content */}
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>

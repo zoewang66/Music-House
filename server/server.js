@@ -32,7 +32,7 @@ app.use(morgan("combined"));
 // Set up rate limiting
 const limiter = rateLimit({
   windowMs: 30 * 60 * 1000,
-  max: 500,
+  max: 5000,
   message: "Request limit exceeded. Try again later!",
 });
 // skip limiter on GET /api/song

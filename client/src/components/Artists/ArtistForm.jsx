@@ -30,49 +30,58 @@ export default function ArtistForm({ mode }) {
     initialValues: { name: "", genre: "", bio: "", songs: [] },
     validate: {
       name: (v) =>
-        v.trim().length >= 3 ? null : "Name must be at least 3 characters",
+        v.trim().length >= 2 ? null : "Name must be at least 2 characters",
       genre: (v) => (v.trim() ? null : "Genre is required"),
       bio: (v) =>
         v.trim().length >= 10 ? null : "Bio must be at least 10 characters",
     },
   });
 
-  // load songs and (optionally) artist
   useEffect(() => {
-    const loadData = async () => {
+    let cancelled = false;
+  
+    async function loadData() {
       try {
-        // fetch all songs
+        const pageSize = 50;
         let page = 1;
-        let items = [];
         let totalPages = 1;
+        const all = [];
+  
         do {
-          const res = await fetchSongs(page, 50);
-          items = items.concat(res.data.items);
-          totalPages = res.data.totalPages;
+          const res = await fetchSongs(page, pageSize);
+          const { items = [], totalPages: tp = 1 } = res.data;
+          all.push(...items);
+          totalPages = tp;
           page++;
         } while (page <= totalPages);
-        setAllSongs(items.map((s) => ({ value: s._id, label: s.title })));
-
-        if (mode === "edit") {
-          // fetch artist details
-          const res = await fetchArtistById(id);
-          const a = res.data;
+  
+        if (!cancelled) {
+          setAllSongs(all.map((s) => ({ value: s._id, label: s.title })));
+        }
+        
+        if (mode === "edit" && !cancelled) {
+          const { data: a } = await fetchArtistById(id);
           form.setValues({
-            name: a.name || "",
+            name:  a.name  || "",
             genre: a.genre || "",
-            bio: a.bio || "",
+            bio:   a.bio   || "",
             songs: (a.songs || []).map((s) => s._id),
           });
         }
-      } catch (e) {
-        console.error(e);
-        setError("Failed to load data. Please try again.");
+      } catch (err) {
+        console.error(err);
+        if (!cancelled) setError("Failed to load data.");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
+    }
+  
     loadData();
-  }, [id, mode, form]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, mode]);  
+  
 
   const handleSubmit = async (values) => {
     setError(null);

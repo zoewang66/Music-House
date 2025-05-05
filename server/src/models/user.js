@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     default: false,
   }
 });
-// Hash password before saving
+
 userSchema.pre("save", { document: true, query: false }, async function (next) {
   if (!this.isModified("password")) return next();
   try {

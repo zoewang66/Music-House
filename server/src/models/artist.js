@@ -9,9 +9,7 @@ const artistSchema = new Schema({
   songs: [{ type: Schema.Types.ObjectId, ref: "Song", required: true }],
 });
 
-// Add pagination plugin
 artistSchema.plugin(mongoosePaginate);
 
-// Text index for relevance search
 artistSchema.index({ name: "text" });
 module.exports = mongoose.model("Artist", artistSchema);

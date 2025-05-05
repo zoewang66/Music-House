@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "@mantine/form";
 import {
   TextInput,
   NumberInput,
@@ -7,6 +8,7 @@ import {
   Alert,
   Select,
   Center,
+  Loader,
   InputWrapper,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -17,8 +19,8 @@ import {
   updateSong,
   createArtist,
 } from "../../api/index";
-import { useForm } from "@mantine/form";
 import PageContainer from "../PageContainer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import "../../css/Card.css";
 
 export default function SongForm({ mode }) {
@@ -27,20 +29,28 @@ export default function SongForm({ mode }) {
   const [artistOptions, setArtistOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const queryClient = useQueryClient();
 
-  // const [title, setTitle] = useState("");
-  // const [duration, setDuration] = useState(0);
-  // const [releaseDate, setReleaseDate] = useState(null);
-  // const [artistOptions, setArtistOptions] = useState([]);
-  // const [selectedArtist, setSelectedArtist] = useState(null);
-  // const [error, setError] = useState(null);
+ 
+  const saveSong = useMutation({
+    mutationFn: (values) =>
+      mode === 'edit' ? updateSong(id, values) : createSong(values),
+    onSuccess() {
+      queryClient.invalidateQueries(['songs']);
+      navigate('/songs');
+    },
+    onError(err) {
+      setError(err.message);
+    },
+  });
+
 
   const form = useForm({
     initialValues: {
       title: "",
       duration: 0,
       releaseDate: null,
-      artist: null,
+      artist: "",
     },
     validate: {
       title: (v) =>
@@ -52,93 +62,114 @@ export default function SongForm({ mode }) {
     },
   });
 
-  // ——— Load all pages of artists to ensure we get more than the backend's page limit ———
   useEffect(() => {
-    (async () => {
-      const pageSize = 9;
-      // fetch page 1
-      const { items: firstPage = [], totalPages } = await fetchArtists(
-        1,
-        "",
-        pageSize
-      );
-      let all = firstPage;
+    let cancelled = false;
+  
+    async function loadData() {
+      try {
+        const pageSize = 50;
+        let page = 1;
+        let totalPages = 1;
+        const allArtists = [];
+  
+        do {
+          const res = await fetchArtists(page, "", pageSize);
+          const items = res.items || [];
+          totalPages = res.totalPages ?? res.pages ?? 1;
+  
+          allArtists.push(...items);
+          page++;
+          if (page <= totalPages) {
+            await new Promise((r) => setTimeout(r, 200));
+          }
+        } while (page <= totalPages);
+  
+        if (!cancelled) {
+          setArtistOptions(
+            allArtists.map((a) => ({ value: a._id, label: a.name }))
+          );
+        }
+  
+        if (mode === "edit" && !cancelled) {
+          const { data: song } = await fetchSongById(id);
+          form.setValues({
+            title: song.title,
+            duration: song.duration,
+            releaseDate: song.releaseDate ? new Date(song.releaseDate) : null,
+            artist: song.artist?._id || "",
+          });
+        }
+      } catch (e) {
+        console.error("SongForm loadData error:", e);
+        if (!cancelled) setError("Failed to load data");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+  
+    loadData();
+  
+    return () => {
+      cancelled = true;
+    };
+  }, [id, mode]); 
 
-      // fetch the rest
-      for (let p = 2; p <= totalPages; p++) {
-        // pause 200ms between each request
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        const { items = [] } = await fetchArtists(p, "", pageSize);
-        all = all.concat(items);
+  const handleSubmit = async (values) => {
+    setError(null);
+
+    try {
+      let artistId = values.artist;
+      if (!/^[0-9a-fA-F]{24}$/.test(artistId)) {
+        const res = await createArtist({ name: artistId, genre: "" });
+        artistId = res.data._id;
       }
 
-      // populate dropdown
-      setArtistOptions(all.map((a) => ({ value: a._id, label: a.name })));
-    })();
-  }, []);
-
-  // If in “edit” mode, preload song data
-  useEffect(() => {
-    if (mode === "edit") {
-      fetchSongById(id)
-        .then((res) => {
-          const song = res.data;
-          setTitle(song.title);
-          setDuration(song.duration);
-          setReleaseDate(song.releaseDate ? new Date(song.releaseDate) : null);
-          setSelectedArtist(song.artist?._id || null);
-        })
-        .catch((err) => setError(err.message));
-    }
-  }, [mode, id]);
-
-  const handleSubmit = async (value) => {
-    setError(null);
-    try {
-      // // build payload with single "artist" field
-      // const payload = { title, duration, releaseDate, artist: selectedArtist };
-      let payload = {
+      const payload = {
         title: values.title.trim(),
         duration: values.duration,
-        releaseDate: values.releaseDate,
-        artist: values.artist,
+        releaseDate: values.releaseDate.toISOString(),
+        artist: artistId,
       };
 
-      if (!/^[0-9a-fA-F]{24}$/.test(selectedArtist)) {
-        // Highlight: if user typed a new artist name, create it first
-        const res = await createArtist({ name: selectedArtist, genre: "" });
-        payload.artist = res.data._id;
-      }
-
-      if (mode === "create") await createSong(payload);
-      else await updateSong(id, payload);
-
-      navigate("/songs");
-    } catch (err) {
-      setError(err.response?.data?.error || err.message);
+      saveSong.mutate(payload);
+    } catch (e) {
+      setError("Save failed");
     }
   };
 
+  if (loading) {
+    return (
+      <PageContainer center>
+        <Center style={{ minHeight: 200 }}>
+          <Loader size="lg" color="#346d67"/>
+        </Center>
+      </PageContainer>
+    );
+  }
+
   return (
-    <PageContainer center={true}>
-      <h2
-        style={{
+    <PageContainer center>
+      <h2 style={{
           color: "black",
           fontFamily: "Henny Penny, system-ui",
           fontSize: "1.5rem",
           fontWeight: "bold",
           textAlign: "center",
-        }}
-      >
+          marginTop: "2.5rem",
+        }}>
         {mode === "create" ? "New Song" : "Edit Song"}
       </h2>
-      {error && <Alert color="red">{error}</Alert>}
+      {error && (
+        <Alert color="red" mb="md">
+          {error}
+        </Alert>
+      )}
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="Title"
-          // value={title}
-          placeholder="Enter song title"
           description="At least 2 characters"
+          placeholder="Enter song title"
           {...form.getInputProps("title")}
           required
           styles={{
@@ -172,19 +203,12 @@ export default function SongForm({ mode }) {
 
         <NumberInput
           label="Duration (sec)"
-          // value={duration}
+          placeholder="e.g. 230"
           description="Must at least 1 second"
-          placeholder="e.g.230"
-          required
           mt="md"
           {...form.getInputProps("duration")}
+          required
           styles={{
-            // The <input> element
-            input: {
-              color: "black",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
-            },
             // The <label> element
             label: {
               color: "white",
@@ -207,14 +231,7 @@ export default function SongForm({ mode }) {
           }}
         />
 
-        <InputWrapper
-          label="Release Date"
-          placeholder="Pick a date"
-          description="Must pick a date"
-          withAsterisk
-          mt="md"
-          {...form.getInputProps("releaseDate")}
-          styles={{
+        <InputWrapper label="Release Date" mt="md" styles={{
             // The <label> element
             label: {
               color: "white",
@@ -222,7 +239,21 @@ export default function SongForm({ mode }) {
               fontSize: "1.2rem",
               fontWeight: "bold",
             },
-            // The description text under the field
+          }}>
+        
+        <DatePicker
+            placeholder="Pick a date"
+            description="Must pick a date"
+            {...form.getInputProps("releaseDate")}
+            required
+            styles={{
+              width: "100%",
+              backgroundColor: "white",
+              borderRadius: "6px",
+              color: "black",
+              fontFamily: "Bellota, sans-serif",
+              fontSize: "1.2rem",
+               // The description text under the field
             description: {
               color: "#b24c66",
               fontFamily: "Bellota, sans-serif",
@@ -234,33 +265,17 @@ export default function SongForm({ mode }) {
               fontFamily: "Bellota, sans-serif",
               fontSize: "1.2rem",
             },
-          }}
-        >
-          <DatePicker
-            placeholder="Pick a date"
-            withAsterisk
-            // value={releaseDate}
-            // onChange={setReleaseDate}
-            mt="md"
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderRadius: "6px",
-              color: "black",
-              fontFamily: "Bellota, sans-serif",
-              fontSize: "1.2rem",
             }}
           />
-        </InputWrapper>
+          </InputWrapper>
 
         <Select
           label="Artist"
           placeholder="Select or type to add new"
-          searchable
           data={artistOptions}
+          searchable
+          creatable
           description="Must pick/create an artist"
-          mt="md"
-          required
           getCreateLabel={(q) => `+ Create ${q}`}
           onCreate={(q) => {
             const item = { value: q, label: q };
@@ -268,6 +283,8 @@ export default function SongForm({ mode }) {
             return q;
           }}
           {...form.getInputProps("artist")}
+          required
+          mt="md"
           styles={{
             // The <input> element
             input: {
@@ -297,8 +314,9 @@ export default function SongForm({ mode }) {
           }}
         />
 
-        <Center>
-          <Button type="submit" mt="md" className="v-btn">
+
+        <Center mt="xl">
+          <Button type="submit" className="v-btn">
             {mode === "create" ? "Create" : "Update"}
           </Button>
         </Center>

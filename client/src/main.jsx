@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 
 createRoot(rootEl).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/IFN666-Assignment2">
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <App />

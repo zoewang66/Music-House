@@ -1,0 +1,428 @@
+{
+    "v": 6,
+    "name": "assessment02",
+    "folders": [
+      {
+        "v": 6,
+        "name": "Auth",
+        "folders": [],
+        "requests": [
+          {
+            "v": "11",
+            "name": "userRegister",
+            "method": "POST",
+            "endpoint": "http://localhost:5010/api/auth/register",
+            "params": [],
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "active": true,
+                "description": ""
+              }
+            ],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "inherit",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "\n{\n  \"username\": \"Zoe\",\n  \"password\": \"123456\",\n  \"is_admin\": false\n} "
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "userLogin",
+            "method": "POST",
+            "endpoint": "http://localhost:5010/api/auth/login",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgwMjM0ZWI5MzM4NWU2YWVlMjFmOTMyIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NDk3NTEwMSwiZXhwIjoxNzQ0OTc4NzAxfQ.16PqgPgQ3NAflpa4PTmSala6YgOLT2JhqjW9O-Z3La8",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"username\":\"PeiyingWang\",\n  \"password\":\"Wpy961028,.\"\n  \n}"
+            },
+            "requestVariables": [],
+            "responses": {}
+          }
+        ],
+        "auth": {
+          "authActive": true,
+          "authType": "inherit"
+        },
+        "headers": [],
+        "_ref_id": "coll_ma8e0dl6_82888f3c-4808-4042-a122-b8a2efb6d1dc"
+      },
+      {
+        "v": 6,
+        "name": "Song",
+        "folders": [],
+        "requests": [
+          {
+            "v": "11",
+            "name": "getSongs",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/song/",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "getASong",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/song/6815c402880354388c440f4f",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "updateASong",
+            "method": "PUT",
+            "endpoint": "http://localhost:5010/api/song/6815c402880354388c440f4f",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"duration\": 267\n}"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "createASong",
+            "method": "POST",
+            "endpoint": "http://localhost:5010/api/song/",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "\n{\n  \"title\": \"iYiYi\",\n  \"duration\": 207,\n  \"releaseDate\": \"2010-06-23T00:00:00.000Z\",\n  \"artist\": \"68163c59e2a804031fefd4ff\"\n}\n"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "deleteASong",
+            "method": "DELETE",
+            "endpoint": "http://localhost:5010/api/song/6815c402880354388c440f40",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODA1MCwiZXhwIjoxNzQ2MjkxNjUwfQ.1d2VXc0PESqhGQqykDKnvYi-Ps6Yd567h6P9-gKpxbY",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          }
+        ],
+        "auth": {
+          "authActive": true,
+          "authType": "inherit"
+        },
+        "headers": [],
+        "_ref_id": "coll_ma8e0l7v_bb683e0e-0ec1-40c9-8f3f-3026a4fe9033"
+      },
+      {
+        "v": 6,
+        "name": "Artist",
+        "folders": [],
+        "requests": [
+          {
+            "v": "11",
+            "name": "getArtists",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/artist",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "getAnArtist",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/artist/6815c402880354388c440f3b",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4NzEyMCwiZXhwIjoxNzQ2MjkwNzIwfQ.0xXxO2EvomrS_jfTQlzaUH0FHwKxLGjnuysqI1CLH_E",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "createArtist",
+            "method": "POST",
+            "endpoint": "http://localhost:5010/api/artist",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"name\": \"Selena Gomez\",\n  \"genre\": \"Pop\",\n  \"bio\": \"American singer, actress, and producer—rose to fame on Disney’s Wizards of Waverly Place and went on to release chart-topping pop albums.\"\n}\n"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "updateAnArtist",
+            "method": "PUT",
+            "endpoint": "http://localhost:5010/api/artist/6816316f9e35593b4819930d",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"genre\": \"Dance Pop\",\n  \"bio\": \"American singer, actress, and producer—known for dance-driven pop hits and her advocacy work.\"\n}\n"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "deleteAnArtist",
+            "method": "DELETE",
+            "endpoint": "http://localhost:5010/api/artist/6816316f9e35593b4819930d",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          }
+        ],
+        "auth": {
+          "authActive": true,
+          "authType": "inherit"
+        },
+        "headers": [],
+        "_ref_id": "coll_ma8e0x2t_651410b0-616d-414b-898a-761920393c60"
+      },
+      {
+        "v": 6,
+        "name": "Playlists",
+        "folders": [],
+        "requests": [
+          {
+            "v": "11",
+            "name": "getPlaylists",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/playlist",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "getAPlaylist",
+            "method": "GET",
+            "endpoint": "http://localhost:5010/api/playlist/68163798e2a804031fefb6bf",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "createPlaylist",
+            "method": "POST",
+            "endpoint": "http://localhost:5010/api/playlist",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"name\": \"Chill Evenings\",\n  \"description\": \"Smooth tracks to wind down your day\",\n  \"songs\": [\n    \"6815c402880354388c440f4e\",\n    \"6815c402880354388c440f47\"\n  ]\n}\n"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "updateAPlaylist",
+            "method": "PUT",
+            "endpoint": "http://localhost:5010/api/playlist/6816432ad3182c3cd115abc5",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": "application/json",
+              "body": "{\n  \"name\": \"Late-Night Vibes\",\n  \"description\": \"Mellow tracks for midnight coding sessions\",\n  \"songs\": [\n    \"645e1f2b7e9c3a1234567890\",  \n    \"645e1f2b7e9c3a1234567891\"   \n  ]\n}\n"
+            },
+            "requestVariables": [],
+            "responses": {}
+          },
+          {
+            "v": "11",
+            "name": "deleteAPlaylist",
+            "method": "DELETE",
+            "endpoint": "http://localhost:5010/api/playlist/6816432ad3182c3cd115abc5",
+            "params": [],
+            "headers": [],
+            "preRequestScript": "",
+            "testScript": "",
+            "auth": {
+              "authType": "bearer",
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgxNjM4ZjllMmE4MDQwMzFmZWZkNGRlIiwiaXNfYWRtaW4iOnRydWUsImlhdCI6MTc0NjI4ODkxMSwiZXhwIjoxNzQ2MjkyNTExfQ.PBLPE9ZHGeiPggeMAksbI3LiMU2StPbuOlnBiQSzULc",
+              "authActive": true
+            },
+            "body": {
+              "contentType": null,
+              "body": null
+            },
+            "requestVariables": [],
+            "responses": {}
+          }
+        ],
+        "auth": {
+          "authActive": true,
+          "authType": "inherit"
+        },
+        "headers": [],
+        "_ref_id": "coll_ma8e19jt_2d1eef06-c37b-4f09-80f9-040f7e034039"
+      }
+    ],
+    "requests": [],
+    "auth": {
+      "authType": "none",
+      "authActive": true
+    },
+    "headers": [],
+    "_ref_id": "coll_m8y2nm56_e7bbe36d-d1e1-4c70-b0c7-fbd620e1ef5f"
+  }

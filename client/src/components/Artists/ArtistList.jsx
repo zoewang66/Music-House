@@ -1,31 +1,31 @@
 import React, { useState, useRef } from "react";
 import { SimpleGrid, Text, Button, Group, Center, Loader } from "@mantine/core";
-import { fetchSongs, deleteSong } from "../../api/index";
+import { fetchArtists, deleteArtist } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
-import SongCard from "./SongCard";
+import ArtistCard from "./ArtistCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import "../../css/Page.css";
 
-export default function SongsList() {
+export default function ArtistsList() {
   const [blocked, setBlocked] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 9;
   const lastClick = useRef(0);
 
-  // fetch & cache pages; never flashes empty thanks to keepPreviousData
   const queryClient = useQueryClient();
   const { data, isFetching } = useQuery({
-    queryKey: ["songs", page],
-    queryFn: () => fetchSongs(page, limit).then((res) => res.data),
+    queryKey: ["artists", page],
+    queryFn: () => fetchArtists(page, "", limit),
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 5, // 5m cache
+    staleTime: 0,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
+
   const items = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
-  // throttle rapid clicks, show overlay for the blocked double‐click
   const changePage = (newPage) => {
     const now = Date.now();
     if (now - lastClick.current < 300) {
@@ -38,12 +38,11 @@ export default function SongsList() {
   };
 
   const onDelete = async (id) => {
-    if (!confirm("Delete this song?")) return;
-    await deleteSong(id);
-    // tell React-Query to refetch the current page:
-    queryClient.invalidateQueries({ queryKey: ["songs", page] });
+    if (!confirm("Delete this artist?")) return;
+    await deleteArtist(id);
+    // tell React-Query to refetch the current page
+    queryClient.invalidateQueries({ queryKey: ["artists", page] });
   };
-
   return (
     <>
       {blocked && (
@@ -54,7 +53,7 @@ export default function SongsList() {
             left: 0,
             width: "100vw",
             height: "100vh",
-            zIndex: 10000,
+            zIndex: 2,
           }}
         >
           <Loader size="xl" color="#346d67" />
@@ -62,13 +61,13 @@ export default function SongsList() {
       )}
 
       <PageContainer center>
-        <Button component={Link} to="/songs/create" id="add-btn">
-          Add New Song
+        <Button component={Link} to="/artists/create" id="add-btn">
+          Add New Artist
         </Button>
 
         <SimpleGrid className="card-list">
-          {items.map((s) => (
-            <SongCard key={s._id} song={s} onDelete={onDelete} />
+          {items.map((a) => (
+            <ArtistCard key={a._id} artist={a} onDelete={onDelete} />
           ))}
         </SimpleGrid>
 

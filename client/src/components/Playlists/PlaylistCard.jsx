@@ -11,15 +11,12 @@ export default function PlaylistCard({ pl, onDelete }) {
   return (
     <Card className="card">
       <div className="card-container">
-        {/* Title (clamped to 2 lines) */}
         <div className="title-container">
           <Text className="title">{pl.name}</Text>
-          {/* Metadata */}
           <Text className="duration">Description: {pl.description}</Text>
         </div>
 
         <div className="card-btn-container">
-          {/* View/Edit at bottom */}
           <Button
             className="v-btn"
             component={Link}
@@ -27,7 +24,6 @@ export default function PlaylistCard({ pl, onDelete }) {
           >
             View / Edit
           </Button>
-          {/* Delete button fixed at top-right */}
           
           <Button className="d-btn" onClick={onDelete}>
             Delete

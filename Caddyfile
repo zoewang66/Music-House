@@ -1,0 +1,27 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace ":80" below with your
+# domain name.
+
+n11449314.ifn666.com {
+    handle /IFN666-Assignment2/api/* {
+        # if you also have an Express API on port 5010:
+        uri strip_prefix /IFN666-Assignment2
+        reverse_proxy localhost:5010
+    }
+
+    handle /IFN666-Assignment2/* {
+        root * /var/www/html/IFN666-Assignment2
+        uri strip_prefix /IFN666-Assignment2
+        try_files {path} /index.html
+        file_server
+    }
+}
+
+
+

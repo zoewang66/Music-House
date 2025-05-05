@@ -48,40 +48,6 @@ const updatePlaylistValidator = () => [
     .withMessage("Each song ID must be valid"),
 ];
 
-// exports.list = [
-//   query("name").optional().trim(),
-//   asyncHandler(async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty())
-//       return res.status(400).json({ errors: errors.array() });
-
-//     const filter = {};
-//     if (req.query.name) filter.name = new RegExp(req.query.name, "i");
-
-//     const options = {
-//       page: req.paginate.page,
-//       limit: req.paginate.limit,
-//       sort: { name: 1 },
-//       populate: [
-//         { path: "songs", select: "title" },
-//         { path: "user", select: "username" },
-//       ],
-//     };
-
-//     const result = await Playlist.paginate(filter, options);
-//     res
-//       .status(200)
-//       .links(
-//         generatePaginationLinks(
-//           req.originalUrl,
-//           result.page,
-//           result.totalPages,
-//           result.limit
-//         )
-//       )
-//       .json(result.docs);
-//   }),
-// ];
 exports.list = asyncHandler(async (req, res) => {
   // optional: allow name filtering
   const filter = {};
@@ -192,7 +158,11 @@ exports.delete = asyncHandler(async (req, res) => {
   const playlist = await Playlist.findById(req.params.id);
   if (!playlist) return res.status(404).json({ error: "Playlist not found" });
 
-  if (playlist.user.toString() !== req.user.user_id && !req.user.is_admin) {
+  // safely pull ownerId (or null if missing)
+  const ownerId = playlist.user ? playlist.user.toString() : null;
+
+  // only enforce ownership if we actually have an owner recorded
+  if (ownerId && ownerId !== req.user.user_id && !req.user.is_admin) {
     return res.status(403).json({ error: "Not authorized" });
   }
 

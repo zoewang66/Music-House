@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import { SimpleGrid, Text, Button, Group, Center, Loader } from "@mantine/core";
-import { fetchArtists, deleteArtist } from "../../api/index";
+import { fetchSongs, deleteSong } from "../../api/index";
 import { Link } from "react-router-dom";
 import PageContainer from "../PageContainer";
-import ArtistCard from "./ArtistCard";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import SongCard from "./SongCard";
+import { useQuery, useQueryClient} from "@tanstack/react-query";
 import "../../css/Page.css";
 
-export default function ArtistsList() {
+export default function SongsList() {
   const [blocked, setBlocked] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 9;
@@ -15,14 +15,13 @@ export default function ArtistsList() {
 
   const queryClient = useQueryClient();
   const { data, isFetching } = useQuery({
-    queryKey: ["artists", page],
-    queryFn: () => fetchArtists(page, "", limit),
+    queryKey: ["songs", page],
+    queryFn: () => fetchSongs(page, limit).then((res) => res.data),
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0, 
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
-
-  // adjust these to whatever your API payload uses:
   const items = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
@@ -38,11 +37,11 @@ export default function ArtistsList() {
   };
 
   const onDelete = async (id) => {
-    if (!confirm("Delete this artist?")) return;
-    await deleteArtist(id);
-    // tell React-Query to refetch the current page
-    queryClient.invalidateQueries({ queryKey: ["artists", page] });
+    if (!confirm("Delete this song?")) return;
+    await deleteSong(id);
+    queryClient.invalidateQueries(["songs", page]);
   };
+
   return (
     <>
       {blocked && (
@@ -53,7 +52,7 @@ export default function ArtistsList() {
             left: 0,
             width: "100vw",
             height: "100vh",
-            zIndex: 2,
+            zIndex: 10000,
           }}
         >
           <Loader size="xl" color="#346d67" />
@@ -61,13 +60,13 @@ export default function ArtistsList() {
       )}
 
       <PageContainer center>
-        <Button component={Link} to="/artists/create" id="add-btn">
-          Add New Artist
+        <Button component={Link} to="/songs/create" id="add-btn">
+          Add New Song
         </Button>
 
         <SimpleGrid className="card-list">
-          {items.map((a) => (
-            <ArtistCard key={a._id} artist={a} onDelete={onDelete} />
+          {items.map((s) => (
+            <SongCard key={s._id} song={s} onDelete={onDelete} />
           ))}
         </SimpleGrid>
 

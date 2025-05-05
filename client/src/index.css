@@ -13,18 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* .mantine-Modal-root {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  /* center via flex */
-/* align-items: center;
-  justify-content: center; */
-/* } */
-*/ html,
+html,
 body {
   overflow-x: hidden;
 }
