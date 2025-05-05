@@ -144,6 +144,105 @@ server/
 
 ---
 
+# Music House Client
+
+## Purpose
+
+Music House Client is a React application that lets users log in, then browse, create, edit, and delete Artists, Songs, and Playlists through the Music House API. It provides a clean, responsive UI built with Mantine and handles authentication, protected routes, in-UI confirmations, and notifications.
+
+---
+
+## Dependencies & Installation
+
+### Prerequisites
+
+- **Node.js** v16 or higher
+- **npm** (comes with Node.js) or **yarn**
+
+### Project Dependencies
+
+The client application uses the following main packages:
+
+- `react` & `react-dom` — core React libraries
+- `react-router-dom` — client-side routing
+- `@mantine/core` & `@mantine/hooks` — UI component library & hooks
+- `@mantine/notifications` — toast notifications
+- `@tanstack/react-query` — data-fetching and caching
+- `axios` — HTTP client for talking to the API
+- `vite` — development server & build tool
+
+### Install & Run
+
+1. **Clone** the repo and `cd` into it:
+   ```bash
+   git clone https://github.com/yourusername/music-house.git
+   cd music-house
+   ```
+2. **Install** all dependencies in one command:
+   ```bash
+   # with npm
+   npm create vite@latest
+   # or with yarn
+   yarn create vite
+   ```
+3. **Start** the development server:
+   ```bash
+   npm install
+   npm run dev
+   ```
+   --
+
+## Architecture
+
+- **frontend/**
+  - **public/**
+    - `vite.svg`
+    - `index.js`
+  - **src/**
+    - **api/**
+      - _wrapper for fetch/axios API calls_
+    - **components/** – reusable UI pieces
+      - **Artists/**
+        - `ArtistCard.jsx`
+        - `ArtistForm.jsx`
+        - `ArtistList.jsx`
+      - **Playlists/**
+        - `PlaylistCard.jsx`
+        - `PlaylistsList.jsx`
+      - **Songs/**
+        - `SongCard.jsx`
+        - `SongForm.jsx`
+        - `SongsList.jsx`
+      - `PrivateRoute.jsx` – protects routes for authenticated users
+      - `PageContainer.jsx` – common page layout wrapper
+    - **contexts/**– React Contexts
+      - `AuthContext.jsx` – manages JWT, login/logout, attaches auth header
+    - **css/** – custom styles
+      - `Card.css`
+      - `Home.css`
+      - `Page.css`
+    - **images/** – static images used in pages
+      - `picture1.png`
+      - `picture2.png`
+      - `picture3.png`
+    - **pages/** – route-level page components
+      - `Artists.jsx`
+      - `Home.jsx`
+      - `Layout.jsx` – global header/navigation + `<Outlet />`
+      - `Login.jsx`
+      - `NoPage.jsx` – 404 fallback
+      - `Playlists.jsx`
+      - `Register.jsx`
+      - `Songs.jsx`
+    - `App.jsx` – React Router setup
+  - `main.jsx` – application entrypoint, wraps `<App />` in `AuthProvider`
+  - `index.css` – global CSS
+  - `.env` – environment variables (e.g. `VITE_API_URL`)
+  - `.gitignore`
+  - `package.json` – scripts & dependencies
+  - `vite.config.js` – Vite configuration
+
+---
 ## Contributing
 
 1. **Fork** the repository
