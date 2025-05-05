@@ -190,7 +190,7 @@ The client application uses the following main packages:
    npm install
    npm run dev
    ```
-   --
+---
 
 ## Architecture
 
